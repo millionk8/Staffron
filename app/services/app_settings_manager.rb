@@ -13,7 +13,7 @@ class AppSettingsManager
   def timeclock_settings
     {}.tap do |settings|
       billing_categories = BillingCategory.visible(app: @app, company: @company)
-      settings.merge!(ActiveModelSerializers::SerializableResource.new(billing_categories).as_json)
+      settings.merge!(ActiveModelSerializers::SerializableResource.new(billing_categories).as_json) if billing_categories.any?
     end
   end
 
