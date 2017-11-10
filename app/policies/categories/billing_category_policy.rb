@@ -1,0 +1,3 @@
+class BillingCategoryPolicy < CategoryPolicy
+
+end

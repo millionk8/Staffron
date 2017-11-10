@@ -1,0 +1,3 @@
+class BillingCategory < Category
+
+end

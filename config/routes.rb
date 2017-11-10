@@ -1,0 +1,50 @@
+require 'sidekiq/web'
+
+Rails.application.routes.draw do
+  mount Rapporteur::Engine, at: '/status'
+  mount ActionCable.server => '/cable'
+  mount Sidekiq::Web => '/sidekiq'
+
+  mount_devise_token_auth_for 'User', at: 'api/auth', controllers: {
+    registrations: 'api/v1/overrides/registrations',
+    token_validations: 'api/v1/overrides/token_validations',
+    sessions: 'api/v1/overrides/sessions'
+  }
+
+  namespace :api, defaults: { format: :json } do
+    scope module: 'v1', constraints: ApiConstraints.new(version: 1, default: true) do
+
+      devise_scope :user do
+        post 'invitations' => 'invitations#create'
+      end
+
+      resources :apps, only: [:index, :show] do
+        resources :user_memberships, only: [:index, :create]
+        post '/packages/:package_uuid/subscribe' => 'app_memberships#create'
+        delete '/cancel_subscription' => 'app_memberships#destroy'
+      end
+      resources :user_memberships do
+        collection do
+          get '/validate_invitation_token/:invitation_token' => 'user_memberships#validate_invitation_token'
+        end
+        member do
+          put '/resend_invitation' => 'user_memberships#resend_invitation'
+          delete '/remove_user_membership' => 'user_memberships#destroy'
+        end
+      end
+      resources :categories, only: [:index, :create, :show, :update, :destroy]
+      resources :companies, only: [:show, :update]
+      resources :timesheets, only: [:index, :create, :show, :update, :destroy]
+      resources :time_logs, only: [:index, :create, :update, :destroy] do
+        resources :logs, only: [:index]
+        collection do
+          post 'start'
+          put 'stop'
+        end
+      end
+      resources :profiles, only: [:update]
+      post 'packages/:id/select' => 'packages#select'
+    end
+  end
+
+end
