@@ -28,9 +28,12 @@ class AppMembershipManager
   end
 
   def add_default_billing_categories
-    categories = YAML.load_file(Rails.root.join('config', 'default_billing_categories.yml'))
-    categories.each do |category_key|
-      BillingCategory.create(app: @package.app, company: @company, name: I18n.t("billing_categories.#{category_key}"))
+    existing_categories = BillingCategory.where(app: @package.app, company: @company)
+    unless existing_categories.any?
+      categories = YAML.load_file(Rails.root.join('config', 'default_billing_categories.yml'))
+      categories.each do |category_key|
+        BillingCategory.create(app: @package.app, company: @company, name: I18n.t("billing_categories.#{category_key}"))
+      end
     end
   end
 end

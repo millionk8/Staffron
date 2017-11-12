@@ -4,8 +4,12 @@ REDIS_URL: redis://redis:6379/1
 # Comment out to disable Sentry logging
 SENTRY_DNS: '*****'
 
-GATEWAY_APP_ID: '*****'
-TIMECLOCK_APP_ID: '*****'
+GATEWAY_APP_URL: '*****'
+TIMECLOCK_APP_URL: '*****'
+DEVISE_CONFIRM_SUCCESS_URL: '*****'
+
+SIDEKIQ_WEB_USERNAME: '*****'
+SIDEKIQ_WEB_PASSWORD: '*****'
 
 MAILTRAP_USERNAME: '*****'
 MAILTRAP_PASSWORD: '*****'

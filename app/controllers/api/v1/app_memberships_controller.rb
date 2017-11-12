@@ -19,9 +19,10 @@ module Api::V1
     # DELETE /api/apps/:app_id/app_memberships
     def destroy
       app_membership = AppMembership.find_by(app: @app, company: current_company, active: true)
-      authorize app_membership
 
       if app_membership
+        authorize app_membership
+        
         if app_membership.update(active: false, canceled_at: Time.current)
           render json: app_membership, root: 'entity'
         else

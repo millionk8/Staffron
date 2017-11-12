@@ -7,7 +7,7 @@ class InvitationManager
   def invite
     now = Time.current
     expiration_time = now + 2.days
-    url  = "http://saffron.local/invitation?invitation_token=#{@user_membership.invitation_token}"
+    url  = "#{ENV['GATEWAY_APP_URL']}/invitation?invitation_token=#{@user_membership.invitation_token}"
 
     UserMailer.invitation_email(@user_membership, url, expiration_time.to_s).deliver_later
 

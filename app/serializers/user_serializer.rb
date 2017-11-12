@@ -1,5 +1,6 @@
 class UserSerializer < ActiveModel::Serializer
   attributes :id,
+             :company_id,
              :uuid,
              :email,
              :status,
