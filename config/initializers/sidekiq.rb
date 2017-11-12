@@ -7,7 +7,7 @@ end
 
 Sidekiq.configure_client do |config|
   config.redis = { url: ENV['REDIS_URL'] }
-  config.redis = { :size => 9 }
+  config.redis = { :size => 4 }
 end
 
 unless Rails.env.development?
