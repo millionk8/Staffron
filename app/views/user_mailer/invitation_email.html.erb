@@ -6,9 +6,9 @@
 <body>
 <h1>You have been invited to use <%= @user_membership.app.name %></h1>
 <% if @user_membership.user %>
-    <p>Go to following page to create your account: <%= @url %>.</p>
+    <p>Go to following page to create your account: <a href="<%= @url %>"><%= @url %></a>.</p>
 <% else %>
-    <p>Go to following page to confirm your invitation: <%= @url %>.</p>
+    <p>Go to following page to confirm your invitation: <a href="<%= @url %>"><%= @url %></a>.</p>
 <% end %>
 <p>
   This link will expire at <%= @expiration_time %>
