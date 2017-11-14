@@ -45,7 +45,7 @@ class TimeLog < ActiveRecord::Base
   end
 
   def check_overlap
-    time_logs_count = TimeLog.where('(started_at BETWEEN :start AND :stop) OR (stopped_at BETWEEN :start AND :stop) OR (started_at <= :start AND stopped_at >= :stop)', start: started_at, stop: stopped_at).count
+    time_logs_count = TimeLog.joins(:user).where('users.company = :company AND (started_at BETWEEN :start AND :stop) OR (stopped_at BETWEEN :start AND :stop) OR (started_at <= :start AND stopped_at >= :stop)', company: user.company, start: started_at, stop: stopped_at).count
 
     if time_logs_count > 0
       errors.add(:base, "#{time_logs_count} overlapping time logs found")
