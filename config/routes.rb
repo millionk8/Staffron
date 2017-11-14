@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       end
       resources :profiles, only: [:update]
       post 'packages/:id/select' => 'packages#select'
+      resources :users, only: [:index]
     end
   end
 

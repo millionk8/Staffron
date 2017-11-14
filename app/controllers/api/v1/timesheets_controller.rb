@@ -6,6 +6,8 @@ module Api::V1
     def index
       timesheets = policy_scope(Timesheet).order('created_at DESC')
 
+      timesheets = timesheets.where(status: params[:status]) if params[:status].present?
+
       render json: timesheets, root: 'entities'
     end
 
