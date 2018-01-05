@@ -5,7 +5,7 @@ class CreatePtoAvailabilities < ActiveRecord::Migration[5.1]
       t.integer :author_id
       t.integer :category_id
       t.integer :year
-      t.float :total, default 0.0
+      t.float :total, default: 0.0
 
       t.timestamps
     end
