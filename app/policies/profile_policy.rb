@@ -1,5 +1,5 @@
 class ProfilePolicy < ApplicationPolicy
   def update?
-    !user.admin? && record.user == user
+    user.admin? || record.user == user
   end
 end

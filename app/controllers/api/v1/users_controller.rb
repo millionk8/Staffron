@@ -10,6 +10,14 @@ module Api::V1
       render json: users, root: 'entities'
     end
 
+    # GET /api/users/:id
+    def show
+      user = User.find(params[:id])
+      authorize user
+
+      render json: user, root: 'entity'
+    end
+
   end
 
 end

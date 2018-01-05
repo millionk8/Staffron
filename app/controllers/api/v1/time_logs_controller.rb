@@ -75,6 +75,7 @@ module Api::V1
 
         if time_log_params[:stopped_at].present?
           time_log.actual_stopped_at = Time.current
+          time_log.stopped_at = time_log_params[:stopped_at]
         else
           time_log.stopped_at = Time.current
         end

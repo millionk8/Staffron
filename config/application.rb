@@ -45,6 +45,7 @@ module Api
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{*/}')]
     config.autoload_paths += Dir[Rails.root.join('app', 'policies', '{*/}')]
     config.autoload_paths += Dir[Rails.root.join('app', 'services')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'fetchers')]
     config.autoload_paths += Dir[Rails.root.join('lib')]
 
     # Logger

@@ -16,7 +16,7 @@ module Api::V1
       end
     end
 
-    # DELETE /api/apps/:app_id/app_memberships
+    # DELETE /api/apps/:app_id/cancel_subscription
     def destroy
       app_membership = AppMembership.find_by(app: @app, company: current_company, active: true)
 

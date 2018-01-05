@@ -1,0 +1,3 @@
+class PtoCategory < Category
+
+end

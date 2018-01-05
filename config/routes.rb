@@ -32,8 +32,27 @@ Rails.application.routes.draw do
           delete '/remove_user_membership' => 'user_memberships#destroy'
         end
       end
-      resources :categories, only: [:index, :create, :show, :update, :destroy]
+      resources :categories, only: [:index, :create, :show, :update, :destroy] do
+        member do
+          put 'set_default'
+        end
+      end
+      resources :comments, only: [:index, :create, :destroy]
       resources :companies, only: [:show, :update]
+      post 'packages/:id/select' => 'packages#select'
+      resource :policy, only: [:show, :create, :update] do
+        member do
+          put 'accept'
+        end
+      end
+      resources :profiles, only: [:update]
+      resources :ptos, only: [:index, :create, :show, :update, :destroy]
+      resources :pto_availabilities, only: [:create] do
+        collection do
+          put '/' => 'pto_availabilities#update'
+        end
+      end
+      resources :schedules, only: [:create, :update, :destroy]
       resources :timesheets, only: [:index, :create, :show, :update, :destroy]
       resources :time_logs, only: [:index, :create, :update, :destroy] do
         resources :logs, only: [:index]
@@ -42,9 +61,15 @@ Rails.application.routes.draw do
           put 'stop'
         end
       end
-      resources :profiles, only: [:update]
-      post 'packages/:id/select' => 'packages#select'
-      resources :users, only: [:index]
+      resources :users, only: [:index, :show] do
+        resources :schedules, only: [:index]
+        resources :pto_availabilities, only: [:index]
+      end
+      resources :versions, only: [:index] do
+        member do
+          put 'revert'
+        end
+      end
     end
   end
 

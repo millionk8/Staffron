@@ -1,6 +1,7 @@
 module Api::V1
   class TimesheetsController < ApplicationController
     before_action :authenticate_user!
+    before_action :find_timesheet, only: [:show, :update, :destroy]
 
     # GET /api/timesheets
     def index
@@ -13,45 +14,53 @@ module Api::V1
 
     # GET /api/timesheets/:id
     def show
-      timesheet = Timesheet.find(params[:id])
-      authorize timesheet
+      authorize @timesheet
 
-      render json: timesheet, root: 'entity'
+      render json: @timesheet, root: 'entity'
     end
 
     # POST /api/timesheets
     def create
       authorize Timesheet
-      timesheet = Timesheet.new(timesheet_params)
-      timesheet.user = current_user
 
-      if timesheet.save
-        render json: timesheet, root: 'entity'
+      if current_user.policy_accepted_at
+        timesheet = Timesheet.new(timesheet_params)
+        timesheet.user = current_user
+
+        if timesheet.save
+          comments_attributes = params[:comments_attributes]
+          timesheet.comments.create(author: current_user, text: comments_attributes[:text]) if comments_attributes
+
+          render json: timesheet, root: 'entity'
+        else
+          render json: { status: false, errors: timesheet.errors }, status: :unprocessable_entity
+        end
       else
-        render json: { status: false, errors: timesheet.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: 'You have to accept company policy before submitting this timesheet' }, status: :unprocessable_entity
       end
     end
 
     # PUT /api/timesheets/:id
     def update
-      timesheet = Timesheet.find(params[:id])
-      authorize timesheet
+      authorize @timesheet
 
-      if timesheet.update(timesheet_params)
-        render json: timesheet, root: 'entity'
+      if @timesheet.update(timesheet_params)
+        comments_attributes = params[:comments_attributes]
+        @timesheet.comments.create(author: current_user, text: comments_attributes[:text], label: comments_attributes[:label]) if comments_attributes
+
+        render json: @timesheet, root: 'entity'
       else
-        render json: { status: false, errors: timesheet.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: @timesheet.errors }, status: :unprocessable_entity
       end
 
     end
 
     # DELETE /api/timesheets/:id
     def destroy
-      timesheet = Timesheet.find(params[:id])
-      authorize timesheet
+      authorize @timesheet
 
-      if timesheet.destroy
-        render json: timesheet, root: 'entity'
+      if @timesheet.destroy
+        render json: @timesheet, root: 'entity'
       else
         render json: { status: false, errors: 'There was a problem while deleting timesheet' }, status: :unprocessable_entity
       end
@@ -59,6 +68,10 @@ module Api::V1
     end
 
     private
+
+    def find_timesheet
+      @timesheet = Timesheet.find(params[:id])
+    end
 
     def timesheet_params
       params.permit(:week, :year, :status, :note)

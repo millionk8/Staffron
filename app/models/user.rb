@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   has_many :user_memberships, dependent: :destroy
   has_many :apps, through: :user_memberships
   has_one :profile, dependent: :destroy
+  has_many :schedules, dependent: :destroy
+  has_many :comments, foreign_key: 'author_id'
 
   # Methods
   def app_permissions(app_id)

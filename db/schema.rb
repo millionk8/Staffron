@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109112415) do
+ActiveRecord::Schema.define(version: 20171209131047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,8 +57,23 @@ ActiveRecord::Schema.define(version: 20171109112415) do
     t.string "type"
     t.integer "status", default: 0
     t.string "name"
+    t.boolean "editable", default: false
+    t.boolean "default", default: false
     t.index ["app_id"], name: "index_categories_on_app_id"
     t.index ["company_id"], name: "index_categories_on_company_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "author_id"
+    t.integer "commentable_id"
+    t.string "commentable_type"
+    t.string "label"
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["commentable_id"], name: "index_comments_on_commentable_id"
+    t.index ["commentable_type"], name: "index_comments_on_commentable_type"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -127,6 +142,14 @@ ActiveRecord::Schema.define(version: 20171109112415) do
     t.index ["uuid"], name: "index_packages_on_uuid"
   end
 
+  create_table "policies", force: :cascade do |t|
+    t.integer "company_id"
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_policies_on_company_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.integer "user_id"
     t.string "first_name"
@@ -145,11 +168,49 @@ ActiveRecord::Schema.define(version: 20171109112415) do
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
+  create_table "pto_availabilities", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "author_id"
+    t.integer "category_id"
+    t.integer "year"
+    t.float "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_pto_availabilities_on_author_id"
+    t.index ["category_id"], name: "index_pto_availabilities_on_category_id"
+    t.index ["user_id"], name: "index_pto_availabilities_on_user_id"
+  end
+
+  create_table "ptos", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "category_id"
+    t.integer "status", default: 0
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.datetime "approved_at"
+    t.datetime "rejected_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_ptos_on_category_id"
+    t.index ["user_id"], name: "index_ptos_on_user_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.integer "app_id"
     t.string "name"
     t.string "machine_name"
     t.index ["app_id"], name: "index_roles_on_app_id"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "day"
+    t.time "start_time"
+    t.integer "work_length"
+    t.integer "break_length"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "day"], name: "index_schedules_on_user_id_and_day", unique: true
   end
 
   create_table "time_logs", force: :cascade do |t|
@@ -224,6 +285,7 @@ ActiveRecord::Schema.define(version: 20171109112415) do
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "policy_accepted_at"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

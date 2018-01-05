@@ -7,6 +7,7 @@ class UserSerializer < ActiveModel::Serializer
              :master,
              :admin,
              :locale,
+             :policy_accepted_at,
              :timezone,
              :apps
 

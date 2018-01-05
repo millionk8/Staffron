@@ -1,0 +1,5 @@
+vacation:
+  editable: false
+  default: true
+sickness:
+  editable: false

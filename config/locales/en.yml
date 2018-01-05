@@ -2,7 +2,11 @@ en:
   messages:
     not_authorized: You are not authorized to perform this action
   billing_categories:
+    general: General
     in_office: In office
     remote: Remote
     on_site: On site
     commuting: Commuting
+  pto_categories:
+    vacation: Vacation
+    sickness: Sickness/Wellness

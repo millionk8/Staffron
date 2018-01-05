@@ -1,4 +1,11 @@
-- in_office
-- remote
-- on_site
-- commuting
+general:
+  editable: false
+  default: true
+in_office:
+  editable: true
+remote:
+  editable: true
+on_site:
+  editable: true
+commuting:
+  editable: true

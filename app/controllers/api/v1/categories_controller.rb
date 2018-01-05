@@ -5,9 +5,10 @@ module Api::V1
 
     # GET /api/categories
     def index
-      categories = BillingCategory.visible.where(app: @current_app, company: current_company)
+      # TODO: Should I add app_id here?
+      categories, meta = CategoriesFetcher.new(Category.where(company: current_company), params).fetch
 
-      render json: categories, root: 'entities'
+      render json: categories, root: 'entities', meta: meta
     end
 
     # GET /api/categories/:id
@@ -34,10 +35,30 @@ module Api::V1
     def update
       authorize @category
 
-      if @category.update(category_params)
-        render json: @category, root: 'entity'
+      if @category.editable
+        if @category.update(category_params)
+          render json: @category, root: 'entity'
+        else
+          render json: { status: false, errors: @category.errors }, status: :unprocessable_entity
+        end
       else
-        render json: { status: false, errors: @category.errors }, status: :unprocessable_entity
+        render json: { status: false, message: 'This category is not editable' }, status: :unprocessable_entity
+      end
+    end
+
+    # PUT /api/categories/:id/set_default
+    def set_default
+      authorize @category
+
+      ActiveRecord::Base.transaction do
+        categories = Category.where(app: @category.app, company: @category.company, type: @category.type)
+        categories.update_all(default: false)
+
+        if @category.update(default: true)
+          render json: @category, root: 'entity'
+        else
+          render json: { status: false, errors: @category.errors }, status: :unprocessable_entity
+        end
       end
     end
 
@@ -45,10 +66,14 @@ module Api::V1
     def destroy
       authorize @category
 
-      if @category.destroy
-        render json: @category, root: 'entity'
+      if @category.editable
+        if @category.destroy
+          render json: @category, root: 'entity'
+        else
+          render json: { status: false, message: 'There was a problem while deleting category' }, status: :unprocessable_entity
+        end
       else
-        render json: { status: false, message: 'There was a problem while deleting category' }, status: :unprocessable_entity
+        render json: { status: false, message: 'This category is not editable' }, status: :unprocessable_entity
       end
 
     end

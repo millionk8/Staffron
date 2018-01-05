@@ -11,5 +11,9 @@ test:
   <<: *default
   database: api_test
 
+staging:
+  <<: *default
+  database: <%= ENV['DATABASE_URL'] %>
+
 production:
    url: <%= ENV['DATABASE_URL'] %>

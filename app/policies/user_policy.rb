@@ -8,4 +8,12 @@ class UserPolicy < ApplicationPolicy
   def index?
     user.admin?
   end
+
+  def show?
+    user.admin?
+  end
+
+  def accept?
+    !user.admin? && record.company == user.company
+  end
 end
