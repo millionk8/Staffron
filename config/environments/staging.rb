@@ -72,7 +72,7 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
@@ -84,12 +84,22 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: ENV['MAILER_URL'] }
 
   config.action_mailer.delivery_method = :smtp
+
   config.action_mailer.smtp_settings = {
-      :user_name => ENV['MAILTRAP_USERNAME'],
-      :password => ENV['MAILTRAP_PASSWORD'],
-      :address => 'smtp.mailtrap.io',
-      :domain => 'smtp.mailtrap.io',
-      :port => '2525',
-      :authentication => :cram_md5
+      :address => ENV['SMTP_ADDRESS'],
+      :port => ENV['SMTP_PORT'],
+      :user_name => ENV['SMTP_USERNAME'],
+      :password => ENV['SMTP_PASSWORD'],
+      :authentication => :login,
+      :enable_starttls_auto => true
   }
+
+  # config.action_mailer.smtp_settings = {
+  #     :user_name => ENV['MAILTRAP_USERNAME'],
+  #     :password => ENV['MAILTRAP_PASSWORD'],
+  #     :address => 'smtp.mailtrap.io',
+  #     :domain => 'smtp.mailtrap.io',
+  #     :port => '2525',
+  #     :authentication => :cram_md5
+  # }
 end

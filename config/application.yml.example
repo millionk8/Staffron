@@ -13,5 +13,13 @@ SIDEKIQ_WEB_PASSWORD: '*****'
 
 MAILER_URL: '*****'
 
+
 MAILTRAP_USERNAME: '*****'
 MAILTRAP_PASSWORD: '*****'
+
+SMTP_ADDRESS: *****
+SMTP_PORT: *****
+SMTP_USERNAME: *****
+SMTP_PASSWORD: *****
+
+DEFAULT_FROM: *****
