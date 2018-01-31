@@ -26,6 +26,7 @@ gem 'redis', '~> 3.0'
 gem 'seed-fu'
 gem 'sentry-raven'
 gem 'sidekiq'
+gem 'rails_12factor'
 
 gem 'rapporteur'
 
