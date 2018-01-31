@@ -5,7 +5,11 @@ module Api::V1
 
     # GET /api/policy
     def show
-      render json: @policy, root: 'entity'
+      if @policy
+        render json: @policy, root: 'entity'
+      else
+        render json: { status: false, error: 'No policy found.' }, status: :not_found
+      end
     end
 
     # POST /api/policy/
