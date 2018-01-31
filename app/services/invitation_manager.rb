@@ -9,7 +9,7 @@ class InvitationManager
     expiration_time = now + 2.days
     url  = "#{ENV['GATEWAY_APP_URL']}/invitation?invitation_token=#{@user_membership.invitation_token}"
 
-    UserMailer.invitation_email(@user_membership, url, expiration_time.to_s).deliver_later
+    UserMailer.invitation_email(@user_membership, url, expiration_time.to_s).deliver_now
 
     @user_membership.update!(invitation_sent_at: now, invitation_expires_at: expiration_time)
 

@@ -19,7 +19,7 @@ module Api::V1
 
       if comment.save
         # Send email to all other people who commented on this commentable
-        CommentMailer.new_comment(comment).deliver_later
+        CommentMailer.new_comment(comment).deliver_now
 
         render json: comment, root: 'entity'
       else

@@ -29,9 +29,9 @@ class Pto < ApplicationRecord
 
   def send_email
     if status == 'approved'
-      PtoMailer.pto_approved(self).deliver_later
+      PtoMailer.pto_approved(self).deliver_now
     elsif status == 'rejected'
-      PtoMailer.pto_rejected(self).deliver_later
+      PtoMailer.pto_rejected(self).deliver_now
     end
   end
 
