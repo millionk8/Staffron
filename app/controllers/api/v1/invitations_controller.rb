@@ -3,13 +3,17 @@ module Api::V1
 
     # POST /api/invitations
     def create
+
       user_membership = UserMembership.find_by(invitation_token: params[:invitation_token], invitation_email: params[:email], company_id: params[:company_id])
 
       if user_membership && user_membership.has_valid_token? && !user_membership.accepted?
         if user_membership.user
           user_membership.update(invitation_token: nil, invitation_accepted_at: Time.current)
         else
+          # We do not want to send out confirmation email
+
           super do |resource|
+            resource.skip_confirmation!
             user_membership.update(user: resource, invitation_token: nil, invitation_accepted_at: Time.current)
           end
         end

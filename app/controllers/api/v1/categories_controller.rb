@@ -24,6 +24,7 @@ module Api::V1
 
       category = Category.new(category_params)
       category.company = current_user.company
+      category.editable = true
       if category.save
         render json: category, root: 'entity'
       else
