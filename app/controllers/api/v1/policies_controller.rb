@@ -42,6 +42,9 @@ module Api::V1
       authorize @policy
 
       if current_user.update(policy_accepted_at: Time.current)
+
+        LoggingManager.new(request).log(current_user, @policy, Log.actions[:policy_accepted])
+
         render json: current_user, root: 'entity'
       else
         render json: { status: false, errors: @policy.errors.full_messages }, status: :unprocessable_entity

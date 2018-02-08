@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
     self.user_permissions.find_by(app_id: app_id).try(:permissions)
   end
 
+  # Scopes
+  scope :admin, -> { where(admin: true) }
+  scope :employee, -> { where(admin: false) }
+
   accepts_nested_attributes_for :company
   accepts_nested_attributes_for :profile
 

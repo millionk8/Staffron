@@ -5,9 +5,10 @@ module Api::V1
     # GET /api/users
     def index
       authorize User
-      users = policy_scope(User)
 
-      render json: users, root: 'entities'
+      users, meta = UsersFetcher.new(policy_scope(User), params).fetch
+
+      render json: users, root: 'entities', meta: meta
     end
 
     # GET /api/users/:id

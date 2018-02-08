@@ -27,6 +27,8 @@ module Api::V1
         comments_attributes = params[:comments_attributes]
         pto.comments.create(author: current_user, text: comments_attributes[:text]) if comments_attributes
 
+        LoggingManager.new(request).log(current_user, pto, Log.actions[:pto_created])
+
         render json: pto, root: 'entity'
       else
         render json: { status: false, errors: pto.errors }, status: :unprocessable_entity

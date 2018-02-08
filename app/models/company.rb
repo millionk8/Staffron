@@ -4,5 +4,6 @@ class Company < ActiveRecord::Base
   has_many :departments, dependent: :destroy
   has_many :app_memberships
   has_many :apps, through: :app_memberships
+  has_many :users
 
 end

@@ -37,7 +37,7 @@ module Api::V1
       time_log.custom = true
 
       if time_log.save
-        LoggingManager.new(request).log(time_log, Log.actions[:time_log_created])
+        LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_created])
 
         render json: time_log, root: 'entity'
       else
@@ -58,7 +58,7 @@ module Api::V1
       end
 
       if time_log.save
-        LoggingManager.new(request).log(time_log, Log.actions[:time_log_started])
+        LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_started])
 
         render json: time_log, root: 'entity'
       else
@@ -83,7 +83,7 @@ module Api::V1
         # Do not create a new version when the time logs is stopped
         time_log.paper_trail.without_versioning do
           if time_log.save
-            LoggingManager.new(request).log(time_log, Log.actions[:time_log_stopped])
+            LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_stopped])
 
             render json: time_log, root: 'entity'
           else
@@ -102,7 +102,7 @@ module Api::V1
       authorize time_log
 
       if time_log.update(time_log_params)
-        LoggingManager.new(request).log(time_log, Log.actions[:time_log_updated])
+        LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_updated])
 
         render json: time_log, root: 'entity'
       else
@@ -117,7 +117,7 @@ module Api::V1
       authorize time_log
 
       if time_log.update(deleted: true, deleted_at: Time.current)
-        LoggingManager.new(request).log(time_log, Log.actions[:time_log_deleted])
+        LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_deleted])
 
         render json: time_log, root: 'entity'
       else

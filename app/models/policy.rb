@@ -9,6 +9,7 @@ class Policy < ApplicationRecord
   # Associations
   belongs_to :company
   has_many :comments, as: :commentable
+  has_many :logs, as: :loggable, dependent: :destroy
 
   # Validations
   validates :text, presence: true

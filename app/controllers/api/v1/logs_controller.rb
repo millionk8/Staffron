@@ -4,12 +4,19 @@ module Api::V1
 
     def index
       if params[:time_log_id]
-        logs = Log.where(loggable: TimeLog.find(params[:time_log_id]))
-
-        render json: logs, root: 'entities'
+        base_logs = Log.where(loggable: TimeLog.find(params[:time_log_id]))
       else
-        render json: { status: false, errors: 'Association for log not found' }, status: :unprocessable_entity
+
+        if params[:user_id]
+          base_logs = Log.where(author_id: params[:user_id])
+        else
+          base_logs = Log.where(author_id: current_user.company.users.ids)
+        end
       end
+
+      logs, meta = LogsFetcher.new(base_logs, params).fetch
+
+      render json: logs, root: 'entities', meta: meta
     end
 
   end

@@ -105,7 +105,7 @@ class BaseFetcher
       sort_field_value = @params[sort_field_param]
       sort_order_value = @params[sort_order_param]
 
-      @entities = @entities.order("#{sort_field_value} #{(sort_order_value == 'descend') ? 'DESC' : 'ASC'}") if sort_field_value && @base_class.respond_to?(sort_field_value)
+      @entities = @entities.order("#{sort_field_value} #{(sort_order_value == 'descend' || sort_order_value == 'desc' || sort_order_value == 'descending') ? 'DESC' : 'ASC'}") if sort_field_value && @base_class.attribute_names.include?(sort_field_value)
     end
 
     # Total

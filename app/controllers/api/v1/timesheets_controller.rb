@@ -31,6 +31,8 @@ module Api::V1
           comments_attributes = params[:comments_attributes]
           timesheet.comments.create(author: current_user, text: comments_attributes[:text]) if comments_attributes
 
+          LoggingManager.new(request).log(current_user, timesheet, Log.actions[:timesheet_submitted])
+
           render json: timesheet, root: 'entity'
         else
           render json: { status: false, errors: timesheet.errors }, status: :unprocessable_entity

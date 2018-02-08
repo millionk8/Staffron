@@ -2,12 +2,14 @@ module Api::V1
   class SchedulesController < ApplicationController
     before_action :authenticate_user!
 
+    # GET /api/users/schedules
     # GET /api/users/:user_id/schedules
     def index
       authorize Schedule
-      schedules = policy_scope(Schedule)
 
-      render json: schedules, root: 'entities'
+      schedules, meta = SchedulesFetcher.new(policy_scope(Schedule), params).fetch
+
+      render json: schedules, root: 'entities', meta: meta
     end
 
     # POST /api/schedules

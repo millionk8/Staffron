@@ -2,7 +2,6 @@ class LogSerializer < ActiveModel::Serializer
   attributes :id,
              :loggable_id,
              :loggable_type,
-             :action,
              :device_name,
              :browser_name,
              :os_name,
@@ -10,5 +9,13 @@ class LogSerializer < ActiveModel::Serializer
              :user_agent,
              :mobile,
              :tablet,
-             :robot
+             :robot,
+             :created_at
+
+  attribute :action do
+    Log.actions[object.action]
+  end
+
+  belongs_to :author
+
 end

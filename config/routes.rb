@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'api/auth', controllers: {
     registrations: 'api/v1/overrides/registrations',
     token_validations: 'api/v1/overrides/token_validations',
-    sessions: 'api/v1/overrides/sessions'
+    sessions: 'api/v1/overrides/sessions',
+    confirmations: 'api/v1/overrides/confirmations'
   }
 
   namespace :api, defaults: { format: :json } do
@@ -38,7 +39,12 @@ Rails.application.routes.draw do
         end
       end
       resources :comments, only: [:index, :create, :destroy]
-      resources :companies, only: [:show, :update]
+      resources :companies, only: [:show, :update] do
+        member do
+          get 'users'
+        end
+      end
+      get 'logs' => 'logs#index'
       post 'packages/:id/select' => 'packages#select'
       resource :policy, only: [:show, :create, :update] do
         member do
@@ -52,7 +58,7 @@ Rails.application.routes.draw do
           put '/' => 'pto_availabilities#update'
         end
       end
-      resources :schedules, only: [:create, :update, :destroy]
+      resources :schedules, only: [:index, :create, :update, :destroy]
       resources :timesheets, only: [:index, :create, :show, :update, :destroy]
       resources :time_logs, only: [:index, :create, :update, :destroy] do
         resources :logs, only: [:index]

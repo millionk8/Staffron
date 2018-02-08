@@ -8,6 +8,7 @@ class Timesheet < ApplicationRecord
   # Associations
   belongs_to :user
   has_many :comments, as: :commentable
+  has_many :logs, as: :loggable, dependent: :destroy
 
   # Validation
   validates :week, :year,
