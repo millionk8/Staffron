@@ -54,7 +54,7 @@ module Api::V1
     private
 
     def policy_params
-      params.permit(:text)
+      params.permit(:file, :file_file_name, :text)
     end
 
     def set_policy

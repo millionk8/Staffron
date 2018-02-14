@@ -9,7 +9,7 @@ class PaperTrail::VersionSerializer < ActiveModel::Serializer
              :user
 
   def model
-    object.reify
+    "#{object.reify.class.name}Serializer".constantize.new(object.reify)
   end
 
   def user_id
