@@ -2,6 +2,7 @@ class LogSerializer < ActiveModel::Serializer
   attributes :id,
              :loggable_id,
              :loggable_type,
+             :author_id,
              :device_name,
              :browser_name,
              :os_name,
