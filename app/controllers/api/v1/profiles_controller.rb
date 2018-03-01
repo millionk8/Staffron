@@ -1,7 +1,20 @@
 module Api::V1
   class ProfilesController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_profile
+    before_action :set_profile, only: [:update]
+
+    # POST /api/profiles
+    def create
+      authorize Profile
+
+      profile = Profile.new(profile_params)
+
+      if profile.save
+        render json: profile, root: 'entity'
+      else
+        render json: { status: false, errors: profile.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
 
     # PUT /api/profiles/:id
     def update
@@ -10,7 +23,7 @@ module Api::V1
       if @profile.update(profile_params)
         render json: @profile, root: 'entity'
       else
-        render json: { status: false, errors: @profile.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: @profile.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -21,7 +34,7 @@ module Api::V1
     end
 
     def profile_params
-      params.permit(:first_name, :last_name, :ssn, :address, :address2, :city, :state, :zip, :phone, :title)
+      params.permit(:user_id, :first_name, :last_name, :ssn, :address, :address2, :city, :state, :zip, :phone, :title)
     end
   end
 end

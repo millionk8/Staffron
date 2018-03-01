@@ -51,7 +51,7 @@ Rails.application.routes.draw do
           put 'accept'
         end
       end
-      resources :profiles, only: [:update]
+      resources :profiles, only: [:create, :update]
       resources :ptos, only: [:index, :create, :show, :update, :destroy]
       resources :pto_availabilities, only: [:create] do
         collection do
@@ -67,7 +67,7 @@ Rails.application.routes.draw do
           put 'stop'
         end
       end
-      resources :users, only: [:index, :show] do
+      resources :users, only: [:index, :show, :create, :update] do
         resources :schedules, only: [:index]
         resources :pto_availabilities, only: [:index]
       end

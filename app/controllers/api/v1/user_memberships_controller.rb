@@ -13,10 +13,13 @@ module Api::V1
     # POST /api/apps/:app_id/user_memberships
     def create
       authorize UserMembership
-      user = User.find_by(email: params[:invitation_email])
+      user = User.find_by(email: params[:invitation_email]) || User.find(params[:user_id])
       user_membership = UserMembership.new(user_membership_params)
       user_membership.company = current_company
-      user_membership.user = user if user
+      if user
+        user_membership.user = user
+        user_membership.invitation_email = user.email
+      end
 
       if user_membership.save
         if InvitationManager.new(user_membership).invite
@@ -25,7 +28,7 @@ module Api::V1
           render json: { status: false, errors: 'There was a problem while sending invitation' }, status: :unprocessable_entity
         end
       else
-        render json: { status: false, errors: user_membership.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: user_membership.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -37,7 +40,7 @@ module Api::V1
       if user_membership.has_valid_token?
           render json: user_membership, root: 'entity'
       else
-        render json: { status: false, message: 'Invalid or expired invitation token' }, status: :unprocessable_entity
+        render json: { status: false, errors: 'Invalid or expired invitation token' }, status: :unprocessable_entity
       end
 
     end
@@ -53,7 +56,7 @@ module Api::V1
       if user_membership.regenerate_invitation_token && InvitationManager.new(user_membership).invite
         render json: user_membership, root: 'entity'
       else
-        render json: { status: false, message: 'There was a problem while resending invitation' }, status: :unprocessable_entity
+        render json: { status: false, errors: 'There was a problem while resending invitation' }, status: :unprocessable_entity
       end
 
     end
@@ -66,7 +69,7 @@ module Api::V1
       if user_membership.destroy
         render json: user_membership, root: 'entity'
       else
-        render json: { status: false, message: 'There was a problem while resending invitation' }, status: :unprocessable_entity
+        render json: { status: false, errors: 'There was a problem while resending invitation' }, status: :unprocessable_entity
       end
 
     end

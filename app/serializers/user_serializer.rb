@@ -8,6 +8,8 @@ class UserSerializer < ActiveModel::Serializer
              :admin,
              :locale,
              :policy_accepted_at,
+             :last_sign_in_at,
+             :confirmed_at,
              :timezone,
              :apps
 

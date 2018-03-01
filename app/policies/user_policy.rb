@@ -13,6 +13,14 @@ class UserPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def create?
+    user.admin?
+  end
+
+  def update?
+    user.admin?
+  end
+
   def accept?
     !user.admin? && record.company == user.company
   end

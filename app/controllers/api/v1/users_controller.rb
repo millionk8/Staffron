@@ -1,6 +1,7 @@
 module Api::V1
   class UsersController < ApplicationController
     before_action :authenticate_user!
+    before_action :find_user, only: [:show, :update]
 
     # GET /api/users
     def index
@@ -13,12 +14,53 @@ module Api::V1
 
     # GET /api/users/:id
     def show
-      user = User.find(params[:id])
-      authorize user
+      authorize @user
 
-      render json: user, root: 'entity'
+      render json: @user, root: 'entity'
+    end
+
+    # POST /api/users
+    def create
+      authorize User
+
+      user = User.new(user_params)
+      user.company = current_user.company
+      user.admin = params[:account_type].present? && params[:account_type] == 'admin'
+
+      if user.save
+        render json: user, root: 'entity'
+      else
+        render json: { status: false, errors: user.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
+    # PUT /api/users/:id
+    def update
+      authorize @user
+      @user.admin = params[:account_type].present? && params[:account_type] == 'admin'
+      @user.locale = user_params[:locale]
+      @user.timezone = user_params[:timezone]
+      if user_params[:password].present?
+        @user.password = user_params[:password]
+        @user.password_confirmation = user_params[:password_confirmation]
+      end
+
+      if @user.save
+        render json: @user, root: 'entity'
+      else
+        render json: { status: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
+    private
+
+    def user_params
+      params.permit(:email, :password, :password_confirmation, :locale, :timezone)
+    end
+
+    def find_user
+      @user = User.find(params[:id])
     end
 
   end
-
 end

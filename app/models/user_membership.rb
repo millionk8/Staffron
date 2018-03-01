@@ -8,8 +8,10 @@ class UserMembership < ActiveRecord::Base
   belongs_to :app
   belongs_to :role
 
-  # Methods
+  # Validations
+  validates :user_id, uniqueness: { scope: :app_id, message: 'already subscribed' }
 
+  # Methods
   def is_valid?
     self.invitation_accepted_at.present?
   end
