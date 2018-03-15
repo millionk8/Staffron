@@ -13,10 +13,11 @@ module Api::V1
     # POST /api/apps/:app_id/user_memberships
     def create
       authorize UserMembership
-      user = User.find_by(email: params[:invitation_email]) || User.find(params[:user_id])
       user_membership = UserMembership.new(user_membership_params)
       user_membership.company = current_company
-      if user
+
+      if params[:user_id].present?
+        user = User.find(params[:user_id])
         user_membership.user = user
         user_membership.invitation_email = user.email
       end
