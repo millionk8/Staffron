@@ -9,7 +9,7 @@ class UserMembership < ActiveRecord::Base
   belongs_to :role
 
   # Validations
-  validates :user_id, uniqueness: { scope: :app_id, message: 'already subscribed' }, if: Proc.new { |o| o.user_id.present? }
+  validates :user_id, uniqueness: { scope: [:app_id, :company_id], message: 'already subscribed' }, if: Proc.new { |o| o.user_id.present? }
 
   # Methods
   def is_valid?
