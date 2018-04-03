@@ -9,6 +9,11 @@ module Api::V1
 
       timesheets = timesheets.where(status: params[:status]) if params[:status].present?
 
+      timesheets = timesheets.where(week: params[:week]) if params[:week].present?
+      timesheets = timesheets.where(year: params[:year]) if params[:year].present?
+
+      timesheets = timesheets.limit(params[:limit]) if params[:limit].present?
+
       render json: timesheets, root: 'entities'
     end
 

@@ -11,7 +11,7 @@ module Api::V1
       render json: comments, root: 'entities', meta: meta
     end
 
-    # POST /api/companies
+    # POST /api/comments
     def create
       authorize Comment
       comment = Comment.new(comments_params)
