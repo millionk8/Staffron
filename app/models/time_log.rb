@@ -12,7 +12,7 @@ class TimeLog < ActiveRecord::Base
   validates :user_id, :category_id,
             presence: true
 
-  validate :check_valid_dates
+  validate :check_valid_dates, if:
   validate :check_in_future
   validate :check_overlap, if: :new_record?
 

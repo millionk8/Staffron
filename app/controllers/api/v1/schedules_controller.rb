@@ -20,7 +20,7 @@ module Api::V1
       if schedule.save
         render json: schedule, root: 'entity'
       else
-        render json: { status: false, errors: schedule.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: schedule.errors.full_messages }, status: :unprocessable_entity
       end
     end
 

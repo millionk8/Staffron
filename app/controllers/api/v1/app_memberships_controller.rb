@@ -12,7 +12,7 @@ module Api::V1
       if app_membership.persisted?
         render json: app_membership, root: 'entity'
       else
-        render json: { status: false, errors: app_membership.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: app_membership.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -26,7 +26,7 @@ module Api::V1
         if app_membership.update(active: false, canceled_at: Time.current)
           render json: app_membership, root: 'entity'
         else
-          render json: { status: false, errors: app_membership.errors }, status: :unprocessable_entity
+          render json: { status: false, errors: app_membership.errors.full_messages }, status: :unprocessable_entity
         end
       else
         render json: { status: false, errors: 'You are not subscribed to this package' }, status: :unprocessable_entity

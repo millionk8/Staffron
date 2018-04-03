@@ -31,7 +31,7 @@ module Api::V1
 
         render json: pto, root: 'entity'
       else
-        render json: { status: false, errors: pto.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: pto.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -45,7 +45,7 @@ module Api::V1
 
         render json: @pto, root: 'entity'
       else
-        render json: { status: false, errors: @pto.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: @pto.errors.full_messages }, status: :unprocessable_entity
       end
     end
 

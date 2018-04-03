@@ -28,7 +28,7 @@ module Api::V1
       if category.save
         render json: category, root: 'entity'
       else
-        render json: { status: false, errors: category.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: category.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -40,7 +40,7 @@ module Api::V1
         if @category.update(category_params)
           render json: @category, root: 'entity'
         else
-          render json: { status: false, errors: @category.errors }, status: :unprocessable_entity
+          render json: { status: false, errors: @category.errors.full_messages }, status: :unprocessable_entity
         end
       else
         render json: { status: false, message: 'This category is not editable' }, status: :unprocessable_entity
@@ -58,7 +58,7 @@ module Api::V1
         if @category.update(default: true)
           render json: @category, root: 'entity'
         else
-          render json: { status: false, errors: @category.errors }, status: :unprocessable_entity
+          render json: { status: false, errors: @category.errors.full_messages }, status: :unprocessable_entity
         end
       end
     end

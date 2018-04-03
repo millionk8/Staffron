@@ -14,6 +14,14 @@ class ApplicationController < ActionController::API
     current_user ? current_user.company : null
   end
 
+  def build_error(error)
+      if error is_a? String
+
+      else
+
+      end
+  end
+
   private
 
   def user_not_authorized

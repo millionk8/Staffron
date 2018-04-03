@@ -35,7 +35,7 @@ module Api::V1
 
           render json: timesheet, root: 'entity'
         else
-          render json: { status: false, errors: timesheet.errors }, status: :unprocessable_entity
+          render json: { status: false, errors: timesheet.errors.full_messages }, status: :unprocessable_entity
         end
       else
         render json: { status: false, errors: 'You have to accept company policy before submitting this timesheet' }, status: :unprocessable_entity
@@ -52,7 +52,7 @@ module Api::V1
 
         render json: @timesheet, root: 'entity'
       else
-        render json: { status: false, errors: @timesheet.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: @timesheet.errors.full_messages }, status: :unprocessable_entity
       end
 
     end

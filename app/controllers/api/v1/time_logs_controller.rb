@@ -41,7 +41,7 @@ module Api::V1
 
         render json: time_log, root: 'entity'
       else
-        render json: { status: false, errors: time_log.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: time_log.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -62,7 +62,7 @@ module Api::V1
 
         render json: time_log, root: 'entity'
       else
-        render json: { status: false, errors: time_log.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: time_log.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -87,7 +87,7 @@ module Api::V1
 
             render json: time_log, root: 'entity'
           else
-            render json: { status: false, errors: 'There was a problem while stopping timer' }, status: :unprocessable_entity
+            render json: { status: false, errors: time_log.errors.full_messages }, status: :unprocessable_entity
           end
         end
       else
@@ -106,7 +106,7 @@ module Api::V1
 
         render json: time_log, root: 'entity'
       else
-        render json: { status: false, errors: 'There was a problem while updating time log' }, status: :unprocessable_entity
+        render json: { status: false, errors: time_log.errors.full_messages }, status: :unprocessable_entity
       end
 
     end
@@ -121,7 +121,7 @@ module Api::V1
 
         render json: time_log, root: 'entity'
       else
-        render json: { status: false, errors: 'There was a problem while deleting time log' }, status: :unprocessable_entity
+        render json: { status: false, errors: time_log.errors.full_messages }, status: :unprocessable_entity
       end
 
     end

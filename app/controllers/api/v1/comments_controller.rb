@@ -23,7 +23,7 @@ module Api::V1
 
         render json: comment, root: 'entity'
       else
-        render json: { status: false, errors: comment.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: comment.errors.full_messages }, status: :unprocessable_entity
       end
     end
 

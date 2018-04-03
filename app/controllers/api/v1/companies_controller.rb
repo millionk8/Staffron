@@ -17,7 +17,7 @@ module Api::V1
       if @company.update(company_params)
         render json: @company, root: 'entity'
       else
-        render json: { status: false, errors: @company.errors }, status: :unprocessable_entity
+        render json: { status: false, errors: @company.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
