@@ -29,9 +29,9 @@ class TimeLog < ActiveRecord::Base
       errors.add(:started_at, "can't be after end time")
     end
 
-    if started_at.present? && stopped_at.present? && stopped_at - started_at > 24 * 60 * 60
-      errors.add(:base, 'Time log is longer than 24 hours')
-    end
+    # if started_at.present? && stopped_at.present? && stopped_at - started_at > 24 * 60 * 60
+    #   errors.add(:base, 'Time log is longer than 24 hours')
+    # end
   end
 
   def check_in_future
