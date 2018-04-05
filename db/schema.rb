@@ -146,9 +146,9 @@ ActiveRecord::Schema.define(version: 20180211222440) do
 
   create_table "policies", force: :cascade do |t|
     t.integer "company_id"
+    t.text "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "text"
     t.string "file_file_name"
     t.string "file_content_type"
     t.integer "file_file_size"
@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(version: 20180211222440) do
     t.integer "author_id"
     t.integer "category_id"
     t.integer "year"
-    t.float "total"
+    t.float "total", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_pto_availabilities_on_author_id"
