@@ -11,5 +11,4 @@ class UserMembershipSerializer < ActiveModel::Serializer
   attribute :user_id
   attribute :role_id
   attribute :company_id
-
 end

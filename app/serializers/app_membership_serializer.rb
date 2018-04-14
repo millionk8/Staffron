@@ -8,6 +8,16 @@ class AppMembershipSerializer < ActiveModel::Serializer
   attribute :company_id
   attribute :app_id
 
+  belongs_to :app
   belongs_to :package
 
+
+  class AppSerializer < ActiveModel::Serializer
+    attributes :id,
+               :name,
+               :machine_name,
+               :version,
+               :status
+
+  end
 end
