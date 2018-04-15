@@ -12,9 +12,6 @@ module Api::V1
         time_logs = time_logs.where(user: current_user)
       end
 
-      puts '********'
-      puts params[:user_id]
-
       if params[:mode] == 'day'
         day = Date.parse(params[:day])
         start = day.beginning_of_day
