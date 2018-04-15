@@ -6,6 +6,15 @@ module Api::V1
     def index
       time_logs = policy_scope(TimeLog).order('created_at DESC')
 
+      if params[:user_id].present?
+        time_logs = time_logs.where(user_id: params[:user_id])
+      else
+        time_logs = time_logs.where(user: current_user)
+      end
+
+      puts '********'
+      puts params[:user_id]
+
       if params[:mode] == 'day'
         day = Date.parse(params[:day])
         start = day.beginning_of_day

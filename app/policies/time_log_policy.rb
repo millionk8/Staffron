@@ -1,11 +1,7 @@
 class TimeLogPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.admin?
-        scope.joins(:user).where('users.company_id = :company_id', company_id: user.company.id)
-      else
-        scope.where(user: user)
-      end
+      scope.joins(:user).where('users.company_id = :company_id', company_id: user.company.id)
     end
   end
 
