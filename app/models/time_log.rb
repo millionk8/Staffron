@@ -17,9 +17,8 @@ class TimeLog < ActiveRecord::Base
   validate :check_overlap, if: :new_record?
 
   # Methods
-
   def self.running(user)
-    self.where(user: user, stopped_at: nil, deleted: false).take
+    self.where(user: user, stopped_at: nil, deleted: false)
   end
 
   private

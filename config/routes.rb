@@ -63,6 +63,7 @@ Rails.application.routes.draw do
       resources :time_logs, only: [:index, :create, :update, :destroy] do
         resources :logs, only: [:index]
         collection do
+          get 'running'
           post 'start'
           put 'stop'
         end

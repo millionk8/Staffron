@@ -12,27 +12,16 @@ module Api::V1
         time_logs = time_logs.where(user: current_user)
       end
 
-      if params[:mode] == 'day'
-        day = Date.parse(params[:day])
-        start = day.beginning_of_day
-        stop = day.end_of_day
-      elsif params[:mode] == 'week'
-        week = params[:week].to_i
-        year = params[:year].to_i
-        start = (Date.commercial(year, week, 1) - 1.day).beginning_of_day
-        stop = (Date.commercial(year, week, 7) - 1.day).beginning_of_day
-      elsif params[:mode] == 'custom'
-        start = Date.parse(params[:start_date]).beginning_of_day
-        stop = Date.parse(params[:end_date]).end_of_day
-      else
-        today = Time.current
-        start = today.beginning_of_day
-        stop = today.end_of_day
-      end
+      time_logs, meta = TimeLogsFetcher.new(time_logs, params).fetch
 
-      time_logs = time_logs.where('(started_at BETWEEN :start AND :stop) OR (stopped_at BETWEEN :start AND :stop)', start: start, stop: stop)
+      render json: time_logs, root: 'entities', meta: meta
+    end
 
-      render json: time_logs, root: 'entities'
+    # GET /api/time_logs/running
+    def running
+      time_logs = policy_scope(TimeLog).order('created_at DESC')
+
+      render json: time_logs.running(current_user), root: 'entities'
     end
 
     # POST /api/time_logs
@@ -55,10 +44,10 @@ module Api::V1
     def start
       authorize TimeLog
 
-      time_log = TimeLog.running(current_user)
+      time_log = TimeLog.running(current_user).first
 
       if time_log
-        render json: { status: false, errors: 'You cannot clock in because you are already clocked in' }, status: :unprocessable_entity
+        render json: { status: false, errors: 'You cannot clock in because your timer is already running' }, status: :unprocessable_entity
       else
         time_log = TimeLog.new(time_log_params)
         time_log.user = current_user
@@ -81,7 +70,7 @@ module Api::V1
 
     # PUT /api/time_logs/stop
     def stop
-      time_log = TimeLog.running(current_user)
+      time_log = TimeLog.running(current_user).first
 
       if time_log
         authorize time_log
