@@ -19,7 +19,7 @@ class TimeLog < ActiveRecord::Base
   # Methods
 
   def self.running(user)
-    self.where(user: user, stopped_at: nil).take
+    self.where(user: user, stopped_at: nil, deleted: false).take
   end
 
   private
