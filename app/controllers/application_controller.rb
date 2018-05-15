@@ -38,7 +38,11 @@ class ApplicationController < ActionController::API
   end
 
   def set_current_app
-    @current_app = request.headers['app-uuid'] ? App.find_by(uuid: request.headers['app-uuid']) : nil
+    @current_app ||= current_app
+  end
+
+  def current_app
+    request.headers['app-uuid'] ? App.find_by(uuid: request.headers['app-uuid']) : nil
   end
 
 end

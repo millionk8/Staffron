@@ -24,4 +24,7 @@ class UserMembership < ActiveRecord::Base
     self.invitation_expires_at.present? && self.invitation_expires_at >= Time.current
   end
 
+  # Scopes
+  scope :accepted, -> { where('invitation_accepted_at IS NOT NULL') }
+
 end

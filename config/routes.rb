@@ -25,6 +25,9 @@ Rails.application.routes.draw do
         delete '/cancel_subscription' => 'app_memberships#destroy'
       end
       resources :user_memberships do
+        member do
+          put 'update_role'
+        end
         collection do
           get '/validate_invitation_token/:invitation_token' => 'user_memberships#validate_invitation_token'
         end

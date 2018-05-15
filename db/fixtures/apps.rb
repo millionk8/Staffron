@@ -8,4 +8,6 @@ Role.seed(:id,
   { id: 2, name: 'Employee', machine_name: 'employee', app_id: 1 },
   { id: 3, name: 'Manager', machine_name: 'manager', app_id: 2 },
   { id: 4, name: 'Employee', machine_name: 'employee', app_id: 2 },
+  { id: 5, name: 'Office Administration', machine_name: 'office_administration', app_id: 1 },
+  { id: 6, name: 'Office Administration', machine_name: 'office_administration', app_id: 2 },
 )

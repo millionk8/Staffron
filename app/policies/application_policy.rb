@@ -4,6 +4,7 @@ class ApplicationPolicy
   def initialize(user, record)
     @user = user
     @record = record
+    @permissions = PermissionsManager.new(user).build_permissions
   end
 
   def index?
@@ -44,6 +45,7 @@ class ApplicationPolicy
     def initialize(user, scope)
       @user = user
       @scope = scope
+      @permissions = PermissionsManager.new(user).build_permissions
     end
 
     def resolve

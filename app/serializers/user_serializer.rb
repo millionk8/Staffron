@@ -11,6 +11,7 @@ class UserSerializer < ActiveModel::Serializer
              :last_sign_in_at,
              :confirmed_at,
              :timezone,
+             :permissions,
              :apps
 
   belongs_to :company

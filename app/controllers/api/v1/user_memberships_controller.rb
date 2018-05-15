@@ -32,6 +32,19 @@ module Api::V1
       end
     end
 
+    # PATCH /api/user_memberships/:id/update_role
+    def update_role
+      authorize UserMembership
+      user_membership = UserMembership.find(params[:id])
+      user_membership.role_id = params[:role_id]
+
+      if user_membership.save
+        render json: user_membership, root: 'entity'
+      else
+        render json: { status: false, errors: user_membership.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
     # GET /api/user_memberships/validate_invitation_token/:invitation_token
     def validate_invitation_token
       token = params[:invitation_token]

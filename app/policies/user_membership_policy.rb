@@ -7,6 +7,10 @@ class UserMembershipPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def update_role?
+    user.admin?
+  end
+
   def resend_invitation?
     user.admin?
   end

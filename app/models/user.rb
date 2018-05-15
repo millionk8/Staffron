@@ -16,8 +16,8 @@ class User < ActiveRecord::Base
   has_many :comments, foreign_key: 'author_id'
 
   # Methods
-  def app_permissions(app_id)
-    self.user_permissions.find_by(app_id: app_id).try(:permissions)
+  def permissions
+    PermissionsManager.new(self).build_permissions
   end
 
   # Scopes
