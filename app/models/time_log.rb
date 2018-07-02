@@ -14,7 +14,7 @@ class TimeLog < ActiveRecord::Base
 
   validate :check_valid_dates
   validate :check_in_future
-  validate :check_overlap, if: :new_record?
+  validate :check_overlap
 
   # Methods
   def self.running(user)
@@ -44,10 +44,13 @@ class TimeLog < ActiveRecord::Base
   end
 
   def check_overlap
-    time_logs_count = TimeLog.where('user_id = :user_id AND deleted = false AND ((started_at BETWEEN :start AND :stop) OR (stopped_at BETWEEN :start AND :stop) OR (started_at <= :start AND stopped_at >= :stop))', user_id: user.id, start: started_at, stop: stopped_at).count
+    # Do not check overlap on time log delete
+    unless deleted_changed?
+      time_logs_count = TimeLog.where('user_id = :user_id AND deleted = false AND ((started_at BETWEEN :start AND :stop) OR (stopped_at BETWEEN :start AND :stop) OR (started_at <= :start AND stopped_at >= :stop))', user_id: user.id, start: started_at, stop: stopped_at).count
 
-    if time_logs_count > 0
-      errors.add(:base, "#{time_logs_count} overlapping time logs found")
+      if time_logs_count > 0
+        errors.add(:base, "#{time_logs_count} overlapping time logs found")
+      end
     end
   end
 end
