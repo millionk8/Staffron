@@ -31,9 +31,10 @@ module Api::V1
       time_log.user = current_user
       time_log.custom = true
 
-      time_log = TimeLog.running(current_user).first
-
-      if time_log
+      running_time_log = TimeLog.running(current_user).first
+      if running_time_log
+        render json: { status: false, errors: 'You have to clock out before you can create a new time log' }, status: :unprocessable_entity
+      else
         if time_log.save
           LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_created])
 
@@ -41,8 +42,6 @@ module Api::V1
         else
           render json: { status: false, errors: time_log.errors.full_messages }, status: :unprocessable_entity
         end
-      else
-        render json: { status: false, errors: 'You have to clock out before you can create a new time log' }, status: :unprocessable_entity
       end
     end
 
