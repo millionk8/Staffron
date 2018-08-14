@@ -51,10 +51,10 @@ class TimeLog < ActiveRecord::Base
 
       unless self.new_record?
         # On update
-        query = "#{query} AND id IS NOT :id"
+        query = "#{query} AND id != :id"
         args[:id] = self.id
       end
-      
+
       time_logs_count = TimeLog.where(query, args).count
       
       if time_logs_count > 0
