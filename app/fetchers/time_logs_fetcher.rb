@@ -14,7 +14,7 @@ class TimeLogsFetcher < BaseFetcher
       week = params[:week].to_i
       year = params[:year].to_i
       start = (Date.commercial(year, week, 1) - 1.day).beginning_of_day
-      stop = (Date.commercial(year, week, 7) - 1.day).beginning_of_day
+      stop = (Date.commercial(year, week, 7) - 1.day).end_of_day
     elsif params[:mode] == 'custom'
       start = Date.parse(params[:start_date]).beginning_of_day
       stop = Date.parse(params[:end_date]).end_of_day
