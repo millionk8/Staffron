@@ -85,12 +85,13 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      :user_name => ENV['MAILTRAP_USERNAME'],
-      :password => ENV['MAILTRAP_PASSWORD'],
-      :address => 'smtp.mailtrap.io',
-      :domain => 'smtp.mailtrap.io',
-      :port => '2525',
-      :authentication => :cram_md5
+      :user_name => ENV['MAILER_SMTP_USERNAME'],
+      :password => ENV['MAILER_SMTP_PASSWORD'],
+      :address => ENV['MAILER_SMTP_ADDRESS'],
+      :domain => ENV['MAILER_SMTP_DOMAIN'],
+      :port => ENV['MAILER_SMTP_PORT'].to_i,
+      :authentication => :login,
+      :enable_starttls_auto => true
   }
 
   config.paperclip_defaults = {
