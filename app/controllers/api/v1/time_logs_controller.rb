@@ -88,7 +88,7 @@ module Api::V1
         end
 
         # Do not create a new version when the time logs is stopped
-        time_log.paper_trail.without_versioning do
+        PaperTrail.request(enabled: false) do
           if time_log.save
             LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_stopped])
 
