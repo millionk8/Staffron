@@ -1,7 +1,7 @@
 class PermissionsManager
 
   PERMISSIONS = [
-    'can_manage_timesheets'
+    'manager'
   ]
 
   def initialize(user)
@@ -19,7 +19,7 @@ class PermissionsManager
     end
   end
 
-  def can_manage_timesheets
+  def manager
     if @user.admin
       true
     else

@@ -56,22 +56,25 @@ Rails.application.routes.draw do
       end
       resources :profiles, only: [:create, :update]
       resources :ptos, only: [:index, :create, :show, :update, :destroy]
+      resources :pto_availabilities, only: [:destroy]
       resources :pto_availabilities, only: [:create] do
         collection do
           put '/' => 'pto_availabilities#update'
         end
       end
+
       resources :schedules, only: [:index, :create, :update, :destroy]
       resources :timesheets, only: [:index, :create, :show, :update, :destroy]
       resources :time_logs, only: [:index, :create, :update, :destroy] do
         resources :logs, only: [:index]
         collection do
+          get 'allrunning'
           get 'running'
           post 'start'
           put 'stop'
         end
       end
-      resources :users, only: [:index, :show, :create, :update] do
+      resources :users, only: [:index, :show, :create, :update, :destroy] do
         resources :schedules, only: [:index]
         resources :pto_availabilities, only: [:index]
       end

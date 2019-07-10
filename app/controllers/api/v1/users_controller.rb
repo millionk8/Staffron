@@ -52,10 +52,22 @@ module Api::V1
       end
     end
 
+    # DELETE /api/users/:id
+    def destroy
+      user = User.find(params[:id])
+
+      if user.destroy
+        render json: user, root: 'entity'
+      else
+        render json: { status: false, errors: 'There was a problem while deleting user' }, status: :unprocessable_entity
+      end
+
+    end
+
     private
 
     def user_params
-      params.permit(:email, :password, :password_confirmation, :locale, :timezone)
+      params.permit(:email, :password, :password_confirmation, :locale, :timezone, :deactivated)
     end
 
     def find_user

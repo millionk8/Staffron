@@ -20,6 +20,14 @@ class User < ActiveRecord::Base
     PermissionsManager.new(self).build_permissions
   end
 
+  def destroy
+    update_attributes(deactivated: true) unless deactivated
+  end
+
+  def active_for_authentication?
+    super && !deactivated
+  end
+
   # Scopes
   scope :admin, -> { where(admin: true) }
   scope :employee, -> { where(admin: false) }
