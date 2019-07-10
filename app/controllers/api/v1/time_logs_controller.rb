@@ -24,6 +24,13 @@ module Api::V1
       render json: time_logs.running(current_user), root: 'entities'
     end
 
+    # GET /api/time_logs/running
+    def allrunning
+      time_logs = policy_scope(TimeLog).order('created_at DESC')
+
+      render json: time_logs.allrunning, root: 'entities'
+    end
+
     # POST /api/time_logs
     def create
       authorize TimeLog

@@ -21,6 +21,10 @@ class TimeLog < ActiveRecord::Base
     self.where(user: user, stopped_at: nil, deleted: false)
   end
 
+  def self.allrunning
+    self.where(stopped_at: nil, deleted: false)
+  end
+
   private
 
   def check_valid_dates
