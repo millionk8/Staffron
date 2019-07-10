@@ -45,20 +45,11 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.action_mailer.default_url_options = { host: 'localhosts', port: 3232 }
-
-  # config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = {
-  #     :user_name => ENV['MAILTRAP_USERNAME'],
-  #     :password => ENV['MAILTRAP_PASSWORD'],
-  #     :address => '0.0.0.0',
-  #     :domain => '0.0.0.0',
-  #     :port => 1025,
-  #     :authentication => :cram_md5
-  # }
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "0.0.0.0", :port => 1025 }
+  config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+  
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3232 }
 
   config.paperclip_defaults = {
       :storage => :s3,
