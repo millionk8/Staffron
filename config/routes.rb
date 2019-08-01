@@ -52,6 +52,7 @@ Rails.application.routes.draw do
       resource :policy, only: [:show, :create, :update] do
         member do
           put 'accept'
+          delete '/:id' => 'policies#destroy'
         end
       end
       resources :profiles, only: [:create, :update]

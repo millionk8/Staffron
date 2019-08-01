@@ -10,4 +10,8 @@ class PolicyPolicy < ApplicationPolicy
   def accept?
     !user.admin? && record.company == user.company
   end
+
+  def destroy?
+    user.admin?
+  end
 end

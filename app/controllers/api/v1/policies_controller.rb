@@ -51,10 +51,22 @@ module Api::V1
       end
     end
 
+    # DELETE /api/policy/:id
+    def destroy
+      policy = Policy.find(params[:id])
+
+      if policy.destroy
+        render json: policy, root: 'entity'
+      else
+        render json: { status: false, errors: 'There was a problem while deleting policy' }, status: :unprocessable_entity
+      end
+
+    end
+
     private
 
     def policy_params
-      params.permit(:file, :file_file_name, :text)
+      params.permit(:text)
     end
 
     def set_policy
