@@ -64,6 +64,7 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :roles, only: [:index, :create, :show, :update, :destroy]
       resources :schedules, only: [:index, :create, :update, :destroy]
       resources :timesheets, only: [:index, :create, :show, :update, :destroy]
       resources :time_logs, only: [:index, :create, :update, :destroy] do
