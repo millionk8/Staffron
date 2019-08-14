@@ -4,6 +4,8 @@ class PermissionsManager
     'officeAdmin',
     'manager',
     'employee',
+    'admin',
+    'master'
   ]
 
   def initialize(user)
@@ -21,6 +23,14 @@ class PermissionsManager
   end
 
   # ROLES
+  def master
+    @user.master
+  end
+
+  def admin
+    @user.admin
+  end
+
   def officeAdmin
     user_membership = UserMembership.find_by(user: @user, app: @timeclock_app)
     user_membership && user_membership.role.machine_name == 'office_administration'
