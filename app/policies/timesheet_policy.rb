@@ -2,7 +2,7 @@ class TimesheetPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if @permissions.include?('manager') || @permissions.include?('officeAdmin')
+      if @permissions.include?('admin') || @permissions.include?('manager') || @permissions.include?('officeAdmin')
         scope.joins(:user).where('users.company_id = :company_id', company_id: user.company.id)
       else
         scope.where(user: user)
@@ -19,10 +19,10 @@ class TimesheetPolicy < ApplicationPolicy
   end
 
   def update?
-    @permissions.include?('manager') || @permissions.include?('officeAdmin') || record.user == user
+    @permissions.include?('admin') || @permissions.include?('manager') || @permissions.include?('officeAdmin') || record.user == user
   end
 
   def destroy?
-    @permissions.include?('manager') || @permissions.include?('officeAdmin')
+    @permissions.include?('admin') || @permissions.include?('manager') || @permissions.include?('officeAdmin')
   end
 end

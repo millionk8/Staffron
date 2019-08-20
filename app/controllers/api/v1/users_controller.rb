@@ -25,7 +25,8 @@ module Api::V1
 
       user = User.new(user_params)
       user.company = current_user.company
-      user.admin = params[:account_type].present? && params[:account_type] == 'admin'
+      user.admin = user_params[:admin]
+      user.master = user_params[:master]
 
       if user.save
         render json: user, root: 'entity'
@@ -37,7 +38,8 @@ module Api::V1
     # PUT /api/users/:id
     def update
       authorize @user
-      @user.admin = params[:account_type].present? && params[:account_type] == 'admin'
+      @user.admin = user_params[:admin]
+      @user.master = user_params[:master]
       @user.locale = user_params[:locale]
       @user.timezone = user_params[:timezone]
       if user_params[:password].present?
@@ -67,7 +69,7 @@ module Api::V1
     private
 
     def user_params
-      params.permit(:email, :password, :password_confirmation, :locale, :timezone, :deactivated)
+      params.permit(:email, :password, :password_confirmation, :locale, :timezone, :deactivated, :admin, :master)
     end
 
     def find_user

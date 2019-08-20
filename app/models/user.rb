@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
   end
 
   # Scopes
-  scope :admin, -> { where(admin: true) }
-  scope :employee, -> { where(admin: false) }
+  # scope :admin, -> { where(admin: true) }
+  # scope :employee, -> { where(admin: false) }
 
   accepts_nested_attributes_for :company
   accepts_nested_attributes_for :profile

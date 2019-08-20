@@ -42,6 +42,7 @@ Rails.application.routes.draw do
         end
       end
       resources :comments, only: [:index, :create, :destroy]
+      resources :companies, only: [:index, :create, :update, :destroy]
       resources :companies, only: [:show, :update] do
         member do
           get 'users'
