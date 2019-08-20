@@ -2,6 +2,7 @@ class AddInvoiceTable < ActiveRecord::Migration[5.1]
   def change
     create_table :invoice do |t|
       t.datetime :date
+      t.integer :company_id
     	t.string :qb_number
     	t.string :client_name
       t.integer :ticket_number
@@ -14,5 +15,7 @@ class AddInvoiceTable < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+    
+    add_index :invoice, :company_id
   end
 end

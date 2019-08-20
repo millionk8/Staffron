@@ -48,6 +48,7 @@ Rails.application.routes.draw do
           get 'users'
         end
       end
+      resources :invoices, only: [:index, :create, :show, :update, :destroy]
       get 'logs' => 'logs#index'
       post 'packages/:id/select' => 'packages#select'
       resource :policy, only: [:show, :create, :update] do

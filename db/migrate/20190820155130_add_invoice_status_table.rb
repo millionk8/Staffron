@@ -1,4 +1,4 @@
-class AddInvoicingStatusTable < ActiveRecord::Migration[5.1]
+class AddInvoiceStatusTable < ActiveRecord::Migration[5.1]
   def change
     create_table :invoice_status do |t|
     	t.string :name
