@@ -4,4 +4,5 @@ Profile.seed(:id,
    { id: 3, user_id: 3, first_name: 'Manager', last_name: 'Manager' },
    { id: 4, user_id: 4, first_name: 'Employee', last_name: 'Employee' },
    { id: 5, user_id: 5, first_name: 'Office', last_name: 'Office' },
+   { id: 6, user_id: 6, first_name: 'Employee2', last_name: 'Employee2' },
 )

@@ -28,7 +28,8 @@ class PermissionsManager
   end
 
   def admin
-    @user.admin
+    user_membership = UserMembership.find_by(user: @user, app: @timeclock_app)
+    user_membership && user_membership.role.machine_name == 'admin' || @user.admin
   end
 
   def officeAdmin
