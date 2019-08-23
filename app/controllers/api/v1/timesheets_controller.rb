@@ -17,6 +17,18 @@ module Api::V1
       render json: timesheets, root: 'entities'
     end
 
+    # GET /api/timesheets/rejected/:id
+    def rejected
+      timesheets = policy_scope(Timesheet).where(user_id: params[:user_id], status: 'rejected')
+      render json: timesheets, root: 'entities'
+    end
+
+    # GET /api/timesheets/pending
+    def pending
+      timesheets = policy_scope(Timesheet).where(status: 'pending')
+      render json: timesheets, root: 'entities'
+    end
+
     # GET /api/timesheets/:id
     def show
       authorize @timesheet

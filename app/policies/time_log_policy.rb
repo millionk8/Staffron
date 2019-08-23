@@ -15,10 +15,12 @@ class TimeLogPolicy < ApplicationPolicy
 
   def start?
     !user.admin?
+    BespokeSlackbotService.new.timeclock_event('good', 'IN', user).deliver
   end
 
   def stop?
     !user.admin? && record.user == user
+    BespokeSlackbotService.new.timeclock_event('danger', 'OUT', user).deliver
   end
 
   def destroy?

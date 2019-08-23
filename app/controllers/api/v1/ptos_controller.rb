@@ -10,6 +10,18 @@ module Api::V1
       render json: ptos, root: 'entities', meta: meta
     end
 
+    # GET /api/ptos/rejected/:id
+    def rejected
+      ptos = policy_scope(Pto).where(user_id: params[:user_id], status: 'rejected')
+      render json: ptos, root: 'entities'
+    end
+    
+    # GET /api/ptos/pending
+    def pending
+      ptos = policy_scope(Pto).where(status: 'pending')
+      render json: ptos, root: 'entities'
+    end
+
     # GET /api/ptos/:id
     def show
       authorize @pto

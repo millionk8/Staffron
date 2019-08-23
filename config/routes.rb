@@ -57,7 +57,12 @@ Rails.application.routes.draw do
         end
       end
       resources :profiles, only: [:create, :update]
-      resources :ptos, only: [:index, :create, :show, :update, :destroy]
+      resources :ptos, only: [:index, :create, :show, :update, :destroy] do
+        collection do
+          post 'rejected'
+          get 'pending'
+        end
+      end
       resources :pto_availabilities, only: [:destroy]
       resources :pto_availabilities, only: [:create] do
         collection do
@@ -67,7 +72,12 @@ Rails.application.routes.draw do
 
       resources :roles, only: [:index, :create, :show, :update, :destroy]
       resources :schedules, only: [:index, :create, :update, :destroy]
-      resources :timesheets, only: [:index, :create, :show, :update, :destroy]
+      resources :timesheets, only: [:index, :create, :show, :update, :destroy]  do
+        collection do
+          post 'rejected'
+          get 'pending'
+        end
+      end
       resources :time_logs, only: [:index, :create, :update, :destroy] do
         resources :logs, only: [:index]
         collection do
