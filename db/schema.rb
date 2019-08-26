@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190524172444) do
+ActiveRecord::Schema.define(version: 20190820155130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,28 @@ ActiveRecord::Schema.define(version: 20190524172444) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_departments_on_company_id"
+  end
+
+  create_table "invoice_status", force: :cascade do |t|
+    t.string "name"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "invoice", force: :cascade do |t|
+    t.datetime "date"
+    t.string "qb_number"
+    t.string "client_name"
+    t.integer "ticket_number"
+    t.integer "client_id"
+    t.integer "user_id"
+    t.integer "status_id"
+    t.integer "category_id"
+    t.text "note"
+    t.text "admin_note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "logs", force: :cascade do |t|
