@@ -1,7 +1,7 @@
 class PtoPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.admin?
+      if @permissions.include?('admin') || @permissions.include?('manager') || @permissions.include?('officeAdmin')
         scope.joins(:user).where('users.company_id = :company_id', company_id: user.company.id)
       else
         scope.where(user: user)
