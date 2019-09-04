@@ -14,7 +14,8 @@ class PtoPolicy < ApplicationPolicy
   end
 
   def create?
-    !user.admin?
+    true
+    # !user.admin?
   end
 
   def update?
