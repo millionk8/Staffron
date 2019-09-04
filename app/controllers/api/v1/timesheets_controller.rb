@@ -40,7 +40,9 @@ module Api::V1
     def create
       authorize Timesheet
 
-      if current_user.policy_accepted_at
+      policy = Policy.where(company_id: current_user.company_id)
+
+      if policy.empty? || current_user.policy_accepted_at
         timesheet = Timesheet.new(timesheet_params)
         timesheet.user = current_user
 

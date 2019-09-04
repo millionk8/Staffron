@@ -34,22 +34,25 @@ module Api::V1
     # POST /api/time_logs
     def create
       authorize TimeLog
+
       time_log = TimeLog.new(time_log_params)
       time_log.user = current_user
       time_log.custom = true
 
-      running_time_log = TimeLog.running(current_user).first
-      if running_time_log
-        render json: { status: false, errors: 'You have to clock out before you can create a new time log' }, status: :unprocessable_entity
-      else
-        if time_log.save
-          LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_created])
+      # puts current_user
 
-          render json: time_log, root: 'entity'
-        else
-          render json: { status: false, errors: time_log.errors.full_messages }, status: :unprocessable_entity
-        end
+      # running_time_log = TimeLog.running(current_user).first
+      # if running_time_log
+      #   render json: { status: false, errors: 'You have to clock out before you can create a new time log' }, status: :unprocessable_entity
+      # else
+      if time_log.save
+        LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_created])
+
+        render json: time_log, root: 'entity'
+      else
+        render json: { status: false, errors: time_log.errors.full_messages }, status: :unprocessable_entity
       end
+      # end
     end
 
     # POST /api/time_logs/start

@@ -5,5 +5,6 @@ class Company < ActiveRecord::Base
   has_many :app_memberships
   has_many :apps, through: :app_memberships
   has_many :users
+  has_many :invoices
 
 end

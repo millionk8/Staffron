@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_one :profile, dependent: :destroy
   has_many :schedules, dependent: :destroy
   has_many :comments, foreign_key: 'author_id'
+  has_many :invoices, foreign_key: 'author_id'
 
   # Methods
   def permissions

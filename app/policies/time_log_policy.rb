@@ -6,7 +6,7 @@ class TimeLogPolicy < ApplicationPolicy
   end
 
   def create?
-    !user.admin?
+    true
   end
 
   def update?
@@ -14,17 +14,21 @@ class TimeLogPolicy < ApplicationPolicy
   end
 
   def start?
-    !user.admin?
+    !user.admin? && record.user == user
+    # if ENV['ENABLE_SLACK']
     BespokeSlackbotService.new.timeclock_event('good', 'IN', user).deliver
+    # end
   end
 
   def stop?
     !user.admin? && record.user == user
+    # if ENV['ENABLE_SLACK']
     BespokeSlackbotService.new.timeclock_event('danger', 'OUT', user).deliver
+    # end
   end
 
   def destroy?
-    !user.admin? && record.user == user
+    user.admin? && record.user == user
   end
 
 end

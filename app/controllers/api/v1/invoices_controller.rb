@@ -1,11 +1,11 @@
 module Api::V1
-  class InvoiceController < ApplicationController
+	class InvoicesController < ApplicationController
     before_action :authenticate_user!
     before_action :set_invoice, except: [:index, :create]
 
     # GET /api/invoices
     def index
-      invoices, meta = InvoiceFetcher.new(Invoice.where(company: current_company), params).fetch
+      invoices, meta = InvoicesFetcher.new(Invoice.where(company: current_company), params).fetch
 
       render json: invoices, root: 'entities', meta: meta
     end
@@ -22,8 +22,7 @@ module Api::V1
       authorize Invoice
 
       invoice = Invoice.new(invoice_params)
-      invoice.company = current_user.company
-      invoice.editable = true
+      invoice.company_id = current_user.company.id
       if invoice.save
         render json: invoice, root: 'entity'
       else
@@ -49,7 +48,7 @@ module Api::V1
       if @invoice.destroy
         render json: @invoice, root: 'entity'
       else
-        render json: { status: false, message: 'There was a problem while deleting invoice' }, status: :unprocessable_entity
+        render json: { status: false, message: 'There was a problem while deleting the invoice' }, status: :unprocessable_entity
       end
     end
 
@@ -62,5 +61,5 @@ module Api::V1
     def invoice_params
       params.permit(:type, :app_id, :name, :status)
     end
-  end
+	end
 end
