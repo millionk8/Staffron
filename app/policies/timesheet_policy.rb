@@ -15,7 +15,7 @@ class TimesheetPolicy < ApplicationPolicy
   end
 
   def create?
-    !user.admin?
+    true
   end
 
   def update?
