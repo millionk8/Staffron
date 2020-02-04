@@ -10,7 +10,7 @@ class TimeLogPolicy < ApplicationPolicy
   end
 
   def update?
-    !user.admin? && record.user == user
+    true
   end
 
   def start?
@@ -28,7 +28,7 @@ class TimeLogPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.admin? && record.user == user
+    true
   end
 
 end

@@ -23,6 +23,6 @@ class TimesheetPolicy < ApplicationPolicy
   end
 
   def destroy?
-    @permissions.include?('admin') || @permissions.include?('manager') || @permissions.include?('officeAdmin')
+    @permissions.include?('admin') || @permissions.include?('manager') || @permissions.include?('officeAdmin') || record.user == user
   end
 end
