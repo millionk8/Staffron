@@ -9,7 +9,8 @@ Rails.application.routes.draw do
     registrations: 'api/v1/overrides/registrations',
     token_validations: 'api/v1/overrides/token_validations',
     sessions: 'api/v1/overrides/sessions',
-    confirmations: 'api/v1/overrides/confirmations'
+    confirmations: 'api/v1/overrides/confirmations',
+    passwords: 'api/v1/overrides/passwords'
   }
 
   namespace :api, defaults: { format: :json } do
