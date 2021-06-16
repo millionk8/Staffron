@@ -3,8 +3,8 @@ class Api::V1::Overrides::PasswordsController < DeviseTokenAuth::PasswordsContro
   protected
 
   def render_edit_error
-    base_redirect_url = URI.join(params[:redirect_url], "/reset-password?token_expired=true&token=#{params[:reset_password_token]}").to_s
+    reset_password_url = URI.join(params[:redirect_url], "/reset-password?token_expired=true&token=#{params[:reset_password_token]}").to_s
     
-    head :found, location: base_redirect_url
+    head :found, location: reset_password_url
   end
 end
