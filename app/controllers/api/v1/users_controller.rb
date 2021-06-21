@@ -61,7 +61,7 @@ module Api::V1
       if user.destroy
         render json: user, root: 'entity'
       else
-        render json: { status: false, errors: 'There was a problem while deleting user' }, status: :unprocessable_entity
+        render json: { status: false, errors: 'There was a problem while disabling user' }, status: :unprocessable_entity
       end
 
     end
