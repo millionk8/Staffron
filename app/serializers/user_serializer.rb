@@ -10,6 +10,7 @@ class UserSerializer < ActiveModel::Serializer
              :policy_accepted_at,
              :last_sign_in_at,
              :confirmed_at,
+             :deactivated,
              :timezone,
              :permissions,
              :apps
