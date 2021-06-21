@@ -9,7 +9,7 @@ module Api::V1
 
       users, meta = UsersFetcher.new(policy_scope(User), params).fetch
 
-      render json: users, root: 'entities', meta: meta
+      render json: users.includes(:user_memberships, :profile, :company), root: 'entities', meta: meta
     end
 
     # GET /api/users/:id
