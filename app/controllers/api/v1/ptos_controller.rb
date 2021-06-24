@@ -39,6 +39,7 @@ module Api::V1
         comments_attributes = params[:comments_attributes]
         pto.comments.create(author: current_user, text: comments_attributes[:text]) if comments_attributes
 
+        PtoMailer.new_request(pto).deliver_now
         LoggingManager.new(request).log(current_user, pto, Log.actions[:pto_created])
 
         render json: pto, root: 'entity'
