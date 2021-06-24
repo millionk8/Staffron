@@ -1,5 +1,12 @@
 class PtoMailer < ApplicationMailer
 
+  def new_request(pto)
+    @pto = pto
+    @profile = @pto.user.profile
+
+    mail(to: @pto.user.company.admins.pluck(:email), subject: "PTO Request by #{@profile&.first_name}")
+  end
+
   def pto_approved(pto)
     @pto = pto
 
