@@ -15,3 +15,5 @@ unless Rails.env.development?
     [user, password] == [ENV['SIDEKIQ_WEB_USERNAME'], ENV['SIDEKIQ_WEB_PASSWORD']]
   end
 end
+
+Sidekiq::Extensions.enable_delay!

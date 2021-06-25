@@ -16,16 +16,27 @@ class TimeLog < ActiveRecord::Base
   validate :check_in_future
   validate :check_overlap
 
+  def running?
+    stopped_at.nil? && !deleted
+  end
+  
+  #time log will be considered as stale if it has not been stopped within 12 hours (43200 seconds)
+  def stale?
+    running? && 
+      (Time.now.utc - started_at.utc) >= 43200
+  end
+
   # Methods
   def self.running(user)
     self.where(user: user, stopped_at: nil, deleted: false)
   end
-
+  
   def self.allrunning
     self.where(stopped_at: nil, deleted: false)
   end
 
   private
+
 
   def check_valid_dates
     if started_at.present? && stopped_at.present? && started_at >= stopped_at

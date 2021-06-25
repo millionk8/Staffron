@@ -74,6 +74,7 @@ module Api::V1
         end
 
         if time_log.save
+          ClockoutWorker.perform_at(12.hours.from_now, time_log.id)
           LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_started])
 
           render json: time_log, root: 'entity'
@@ -100,6 +101,7 @@ module Api::V1
         # Do not create a new version when the time logs is stopped
         PaperTrail.request(enabled: false) do
           if time_log.save
+            delete_job('ClockoutWorker', time_log.id)
             LoggingManager.new(request).log(current_user, time_log, Log.actions[:time_log_stopped])
 
             render json: time_log, root: 'entity'
