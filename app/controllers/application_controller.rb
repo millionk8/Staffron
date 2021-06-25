@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
   before_action :set_current_app
 
   def current_company
-    current_user ? current_user.company : null
+    current_user ? current_user.company : nil
   end
 
   def build_error(error)
@@ -45,4 +45,10 @@ class ApplicationController < ActionController::API
     request.headers['app-uuid'] ? App.find_by(uuid: request.headers['app-uuid']) : nil
   end
 
+  def delete_job(worker, id)
+    ss = Sidekiq::ScheduledSet.new
+    job = ss.find { |job| job["class"] == worker && job["args"].first == id }
+
+    job.delete if job.present?
+  end
 end
