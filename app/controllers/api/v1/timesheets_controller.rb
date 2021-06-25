@@ -5,7 +5,7 @@ module Api::V1
 
     # GET /api/timesheets
     def index
-      timesheets = policy_scope(Timesheet).order('created_at DESC')
+      timesheets = policy_scope(Timesheet).order('timesheets.created_at DESC').paginate(page: params[:page], per_page: params[:per_page])
 
       timesheets = timesheets.where(status: params[:status]) if params[:status].present?
 
@@ -14,7 +14,7 @@ module Api::V1
 
       timesheets = timesheets.limit(params[:limit]) if params[:limit].present?
 
-      render json: timesheets, root: 'entities'
+      render json: timesheets.includes(user: :company), root: 'entities', meta: { total_entries: timesheets.total_entries }
     end
 
     # GET /api/timesheets/rejected/:id
