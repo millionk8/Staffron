@@ -5,6 +5,7 @@ class Pto < ApplicationRecord
   # Callbacks
   before_save :set_status_date, if: :status_changed?
   after_update :send_email, if: :status_changed?
+  after_update :integrate_with_time_log, if: Proc.new { |pto| pto.approved? }
 
   # Associations
   belongs_to :user
@@ -35,4 +36,13 @@ class Pto < ApplicationRecord
     end
   end
 
+  def integrate_with_time_log
+    TimeLog.create!(
+      user_id: user_id, 
+      category_id: category_id,
+      started_at: starts_at,
+      stopped_at: ends_at,
+      note: comments.first.text
+    )
+  end
 end
