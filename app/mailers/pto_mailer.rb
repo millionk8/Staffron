@@ -3,8 +3,10 @@ class PtoMailer < ApplicationMailer
   def new_request(pto)
     @pto = pto
     @profile = @pto.user.profile
+    @ptos_url = "#{ENV['GATEWAY_APP_URL']}/ptos"
+    recipients = ['jeffrey.atto@concise.com', 'michael.schneider@concise.com']
 
-    mail(to: @pto.user.company.admins.pluck(:email), subject: "PTO Request by #{@profile&.first_name}")
+    mail(to: recipients, subject: "PTO Request by #{@profile&.first_name}")
   end
 
   def pto_approved(pto)
@@ -18,5 +20,4 @@ class PtoMailer < ApplicationMailer
 
     mail(to: @pto.user.email, subject: 'Your PTO request has been rejected!')
   end
-
 end

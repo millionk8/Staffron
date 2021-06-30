@@ -4,9 +4,10 @@
 	  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
 	</head>
 	<body>
-		<h1><%= @profile&.first_name %> has requested PTO.</h1>
+		<h1>PTO Request by <%= @profile&.first_name %></h1>
 		<p>Starts at: <%= @pto.starts_at %></p>
 		<p>Ends at: <%= @pto.ends_at %></p>
 		<p>Note: <%= @pto.comments.first.text %></p>
+		<p>Please click <%= link_to "here", @ptos_url %> to access PTOs listing page.</p>
 	</body>
 </html>
