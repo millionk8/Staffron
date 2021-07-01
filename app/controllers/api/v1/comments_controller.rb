@@ -6,7 +6,7 @@ module Api::V1
     # GET /api/comments
     def index
       authorize Comment
-      comments, meta = CommentsFetcher.new(Comment.all, params).fetch
+      comments, meta = CommentsFetcher.new(Comment.includes(author: [:company, :user_memberships]).all, params).fetch
 
       render json: comments, root: 'entities', meta: meta
     end
