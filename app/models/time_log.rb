@@ -13,7 +13,7 @@ class TimeLog < ActiveRecord::Base
             presence: true
 
   validate :check_valid_dates
-  validate :check_in_future, unless: Proc.new { |time_log| time_log.category.is_a? PtoCategory }
+  validate :check_in_future, unless: Proc.new { |time_log| %w(PtoCategory HolidayCategory).include?(time_log.category.type)  }
   validate :check_overlap
 
   def running?

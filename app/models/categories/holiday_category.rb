@@ -1,0 +1,2 @@
+class HolidayCategory < Category
+end
