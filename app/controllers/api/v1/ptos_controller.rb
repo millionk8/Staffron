@@ -51,8 +51,9 @@ module Api::V1
     # PUT /api/ptos/:id
     def update
       authorize @pto
-
+      
       if @pto.update(ptos_params)
+        send_email(@pto)
         comments_attributes = params[:comments_attributes]
         @pto.comments.create(author: current_user, text: comments_attributes[:text], label: comments_attributes[:label]) if comments_attributes
 
@@ -84,5 +85,12 @@ module Api::V1
       @pto = Pto.find(params[:id])
     end
 
+    def send_email(pto)
+      if pto.status == 'approved'
+        PtoMailer.pto_approved(pto, current_user.profile).deliver_now
+      elsif pto.status == 'rejected'
+        PtoMailer.pto_rejected(pto, current_user.profile).deliver_now
+      end
+    end
   end
 end
