@@ -42,7 +42,7 @@ class Pto < ApplicationRecord
       category_id: category_id,
       started_at: starts_at,
       stopped_at: ends_at,
-      note: comments.first.text
+      note: comments.first&.text
     )
   end
 end
