@@ -32,7 +32,7 @@ gem 'sidekiq'
 gem 'whenever', require: false
 gem 'will_paginate'
 gem 'rails_12factor'
-
+gem 'http'
 gem 'rapporteur'
 
 # Use sqlite3 as the database for Active Record

@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
   has_many :schedules, dependent: :destroy
   has_many :comments, foreign_key: 'author_id'
   has_many :invoices, foreign_key: 'author_id'
+  has_many :ptos
+
+  scope :active, -> { where(deactivated: [false, nil]) }
 
   # Methods
   def permissions
@@ -28,6 +31,12 @@ class User < ActiveRecord::Base
   def active_for_authentication?
     super && !deactivated
   end
+
+  def employment_years
+    return 0.0 unless joining_date.present?
+    
+    ((Time.zone.now.to_date - joining_date) / 365 ).to_f.round(2)
+  end  
 
   # Scopes
   # scope :admin, -> { where(admin: true) }

@@ -27,6 +27,8 @@ module Api::V1
       user.company = current_user.company
       user.admin = user_params[:admin]
       user.master = user_params[:master]
+      user.employment_type = user_params[:employment_type]
+      user.joining_date = Date.today
 
       if user.save
         render json: user, root: 'entity'
@@ -42,6 +44,8 @@ module Api::V1
       @user.master = user_params[:master]
       @user.locale = user_params[:locale]
       @user.timezone = user_params[:timezone]
+      @user.employment_type = user_params[:employment_type]
+      @user.joining_date = user_params[:joining_date]
       if user_params[:password].present?
         @user.password = user_params[:password]
         @user.password_confirmation = user_params[:password_confirmation]
@@ -69,7 +73,7 @@ module Api::V1
     private
 
     def user_params
-      params.permit(:email, :password, :password_confirmation, :locale, :timezone, :deactivated, :admin, :master)
+      params.permit(:email, :password, :password_confirmation, :locale, :timezone, :deactivated, :admin, :master, :employment_type, :joining_date)
     end
 
     def find_user
