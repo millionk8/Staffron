@@ -22,3 +22,7 @@
 every :saturday, at: '11:30pm' do # 7:30 for US/Eastern.
   rake "timesheets:submit"
 end
+
+every :year, at: 'January 1st 6am' do
+  rake "reset:timeoff"
+end
