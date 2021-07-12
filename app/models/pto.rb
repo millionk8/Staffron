@@ -29,9 +29,9 @@ class Pto < ApplicationRecord
   end
 
   def update_timeoff_days
-    pto = (category.name.downcase == 'vacation' ? remaining_pto_days : remaining_sickness_days)
+    pto = (category.name.downcase == 'vacation' ? 'remaining_pto_days' : 'remaining_sickness_days')
 
-    remaining_days = user.send(pto.to_sym - requested_offdays)
+    remaining_days = user.send(pto.to_sym) - requested_offdays
 
     user.update_attribute(pto.to_sym, remaining_days)
   end
