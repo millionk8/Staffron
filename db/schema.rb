@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190827021205) do
+ActiveRecord::Schema.define(version: 20210706182809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -307,6 +307,10 @@ ActiveRecord::Schema.define(version: 20190827021205) do
     t.datetime "policy_accepted_at"
     t.boolean "allow_password_change", default: false, null: false
     t.boolean "deactivated"
+    t.date "joining_date"
+    t.string "employment_type"
+    t.float "remaining_pto_days", default: 0.0
+    t.float "remaining_sickness_days", default: 0.0
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

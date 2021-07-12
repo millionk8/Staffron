@@ -5,7 +5,7 @@ class Pto < ApplicationRecord
   # Callbacks
   before_save :set_status_date, if: :status_changed?
   after_update :send_email, if: :status_changed?
-  after_update :integrate_with_time_log, if: Proc.new { |pto| pto.approved? }
+  after_update :update_timeoff_days, :integrate_with_time_log, if: Proc.new { |pto| pto.approved? }
 
   # Associations
   belongs_to :user
@@ -35,6 +35,37 @@ class Pto < ApplicationRecord
       PtoMailer.pto_rejected(self).deliver_now
     end
   end
+
+  def update_timeoff_days
+    pto = (category.name.downcase == 'vacation' ? remaining_pto_days : remaining_sickness_days)
+
+    remaining_days = user.send(pto.to_sym - requested_offdays)
+
+    user.update_attribute(pto.to_sym, remaining_days)
+  end
+
+  def requested_offdays
+    days = 0.0
+
+    (starts_at.to_date..ends_at.to_date).each do |offday|
+      next if offday.on_weekend?
+
+      if offday == starts_at.to_date
+        days = days + Pto.offday(17.0, starts_at.hour)
+      elsif offday == ends_at.to_date
+        days = days + Pto.offday(ends_at.hour, 9.0)
+      else
+        days = days + 1.0  
+      end
+    end
+
+    days
+  end
+
+  def self.offday(from, to)
+    day = (from - to) / 8.0
+    day > 0.5 ? 1.0 : 0.5
+  end  
 
   def integrate_with_time_log
     TimeLog.create!(
