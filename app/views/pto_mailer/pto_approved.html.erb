@@ -4,7 +4,7 @@
 	  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
 	</head>
 	<body>
-		<h1>Your PTO request has been approved</h1>
+		<h1>Your PTO request has been approved: <%= @approved_by&.full_name %></h1>
 		<p>Starts at: <%= @pto.starts_at %></p>
 		<p>Ends at: <%= @pto.ends_at %></p>
 	</body>

@@ -4,8 +4,8 @@ class Pto < ApplicationRecord
 
   # Callbacks
   before_save :set_status_date, if: :status_changed?
-  after_update :send_email, if: :status_changed?
   after_update :update_timeoff_days, :integrate_with_time_log, if: Proc.new { |pto| pto.approved? }
+  after_update :disintegrate_with_time_log, if: Proc.new { |pto| pto.rejected? }
 
   # Associations
   belongs_to :user
@@ -25,14 +25,6 @@ class Pto < ApplicationRecord
     elsif status == 'rejected'
       self.rejected_at = Time.current
       self.approved_at = nil
-    end
-  end
-
-  def send_email
-    if status == 'approved'
-      PtoMailer.pto_approved(self).deliver_now
-    elsif status == 'rejected'
-      PtoMailer.pto_rejected(self).deliver_now
     end
   end
 
@@ -73,7 +65,16 @@ class Pto < ApplicationRecord
       category_id: category_id,
       started_at: starts_at,
       stopped_at: ends_at,
-      note: comments.first.text
+      note: comments.first&.text
     )
+  end
+
+  def disintegrate_with_time_log
+    TimeLog.where(
+      user_id: user_id, 
+      category_id: category_id,
+      started_at: starts_at,
+      stopped_at: ends_at
+    ).first.destroy
   end
 end
