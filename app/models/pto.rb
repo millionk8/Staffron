@@ -75,6 +75,6 @@ class Pto < ApplicationRecord
       category_id: category_id,
       started_at: starts_at,
       stopped_at: ends_at
-    ).first.destroy
+    ).first&.destroy
   end
 end
