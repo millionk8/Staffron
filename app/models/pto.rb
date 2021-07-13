@@ -4,7 +4,8 @@ class Pto < ApplicationRecord
 
   # Callbacks
   before_save :set_status_date, if: :status_changed?
-  after_update :update_timeoff_days, :integrate_with_time_log, if: Proc.new { |pto| pto.approved? }
+  after_update :update_remaining_timeoff_days, if: :can_update_remaining_timeoff_days?
+  after_update :integrate_with_time_log, if: Proc.new { |pto| pto.approved? }
   after_update :disintegrate_with_time_log, if: Proc.new { |pto| pto.rejected? }
 
   # Associations
@@ -28,8 +29,17 @@ class Pto < ApplicationRecord
     end
   end
 
-  def update_timeoff_days
-    pto = (category.name.downcase.include?('vacation') ? 'remaining_pto_days' : 'remaining_sickness_days')
+  def can_update_remaining_timeoff_days?
+    approved? && 
+      !category.name.downcase.include?('unpaid')
+  end
+
+  def update_remaining_timeoff_days
+    pto = if category.name.downcase.include?('vacation')
+      'remaining_pto_days'
+    elsif category.name.downcase.include?('sickness')
+      'remaining_sickness_days'
+    end
 
     remaining_days = user.send(pto.to_sym) - requested_offdays
 

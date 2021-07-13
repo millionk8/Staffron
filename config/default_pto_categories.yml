@@ -3,3 +3,5 @@ vacation:
   default: true
 sickness:
   editable: false
+unpaid:
+  editable: false
