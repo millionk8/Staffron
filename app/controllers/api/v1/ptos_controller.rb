@@ -53,9 +53,9 @@ module Api::V1
       authorize @pto
       
       if @pto.update(ptos_params)
-        send_email(@pto)
         comments_attributes = params[:comments_attributes]
         @pto.comments.create(author: current_user, text: comments_attributes[:text], label: comments_attributes[:label]) if comments_attributes
+        send_email(@pto, comments_attributes&.dig(:text))
 
         render json: @pto, root: 'entity'
       else
@@ -85,11 +85,11 @@ module Api::V1
       @pto = Pto.find(params[:id])
     end
 
-    def send_email(pto)
+    def send_email(pto, comment)
       if pto.status == 'approved'
-        PtoMailer.pto_approved(pto, current_user.profile).deliver_now
+        PtoMailer.pto_approved(pto, current_user.profile, comment).deliver_now
       elsif pto.status == 'rejected'
-        PtoMailer.pto_rejected(pto, current_user.profile).deliver_now
+        PtoMailer.pto_rejected(pto, current_user.profile, comment).deliver_now
       end
     end
   end

@@ -9,15 +9,17 @@ class PtoMailer < ApplicationMailer
     mail(to: recipients, subject: "PTO Request by #{@profile&.first_name}")
   end
 
-  def pto_approved(pto, approved_by)
+  def pto_approved(pto, approved_by, comment)
     @pto = pto
     @approved_by = approved_by
+    @comment = comment
     mail(to: @pto.user.email, subject: 'Your PTO request has been approved!')
   end
 
-  def pto_rejected(pto, rejected_by)
+  def pto_rejected(pto, rejected_by, comment)
     @pto = pto
     @rejected_by = rejected_by
+    @comment = comment
 
     mail(to: @pto.user.email, subject: 'Your PTO request has been rejected!')
   end
