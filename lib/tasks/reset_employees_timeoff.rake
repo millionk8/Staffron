@@ -30,7 +30,7 @@ namespace :reset do
       offdays = { pto: 0.0, sickness: 0.0 }
 
       user.ptos.each do |pto|
-        if pto.category.name.downcase == 'vacation'
+        if pto.category.name.downcase.include?('vacation')
           offdays[:pto] = offdays[:pto] + pto.requested_offdays
         else
           offdays[:sickness] = offdays[:sickness] + pto.requested_offdays
