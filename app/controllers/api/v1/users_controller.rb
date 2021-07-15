@@ -25,9 +25,6 @@ module Api::V1
 
       user = User.new(user_params)
       user.company = current_user.company
-      user.admin = user_params[:admin]
-      user.master = user_params[:master]
-      user.employment_type = user_params[:employment_type]
       user.joining_date = Date.today
 
       if user.save
@@ -40,18 +37,8 @@ module Api::V1
     # PUT /api/users/:id
     def update
       authorize @user
-      @user.admin = user_params[:admin]
-      @user.master = user_params[:master]
-      @user.locale = user_params[:locale]
-      @user.timezone = user_params[:timezone]
-      @user.employment_type = user_params[:employment_type]
-      @user.joining_date = user_params[:joining_date]
-      if user_params[:password].present?
-        @user.password = user_params[:password]
-        @user.password_confirmation = user_params[:password_confirmation]
-      end
 
-      if @user.save
+      if @user.update_attributes(user_params)
         render json: @user, root: 'entity'
       else
         render json: { status: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
@@ -73,7 +60,14 @@ module Api::V1
     private
 
     def user_params
-      params.permit(:email, :password, :password_confirmation, :locale, :timezone, :deactivated, :admin, :master, :employment_type, :joining_date)
+      attrs = [:email, :password, :password_confirmation, :locale, :timezone, :deactivated, :admin, :master, :employment_type, :joining_date, :remaining_pto_days, :remaining_sickness_days]
+      if params[:password].present?
+        attrs.push(:password, :password_confirmation) 
+        params[:user][:password] = params[:password]
+        params[:user][:password_confirmation] = params[:password_confirmation]
+      end
+      
+      params.require(:user).permit(attrs)
     end
 
     def find_user
@@ -82,3 +76,4 @@ module Api::V1
 
   end
 end
+
