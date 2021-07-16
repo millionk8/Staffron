@@ -8,9 +8,9 @@ class PtoSerializer < ActiveModel::Serializer
              :approved_at,
              :rejected_at,
              :created_at,
-             :updated_at
+             :updated_at,
+             :requested_offdays
 
   belongs_to :category
   belongs_to :user
-
 end
