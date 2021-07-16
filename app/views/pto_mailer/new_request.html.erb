@@ -9,5 +9,7 @@
 		<p>Ends at: <%= @pto.ends_at %></p>
 		<p>Note: <%= @pto.comments.first.text %></p>
 		<p>Please click <%= link_to "here", @ptos_url %> to access PTOs listing page.</p>
+		<p>Number of Sickness/Wellness Days Remaining Before This Request is Approved: <%= @pto.user.remaining_sickness_days %> </p>
+		<p>Number of Vacation/PTO Days Remaining Before This Request is Approved: <%= @pto.user.remaining_pto_days %> </p>
 	</body>
 </html>
