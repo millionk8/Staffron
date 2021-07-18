@@ -7,11 +7,10 @@ module Api::V1
     def index
       timesheets = policy_scope(Timesheet).order('timesheets.created_at DESC').paginate(page: params[:page], per_page: params[:per_page])
 
+      timesheets = timesheets.where(user_id: params[:user_id]) if params[:user_id].present?
       timesheets = timesheets.where(status: params[:status]) if params[:status].present?
-
       timesheets = timesheets.where(week: params[:week]) if params[:week].present?
       timesheets = timesheets.where(year: params[:year]) if params[:year].present?
-
       timesheets = timesheets.limit(params[:limit]) if params[:limit].present?
 
       render json: timesheets.includes(user: :company), root: 'entities', meta: { total_entries: timesheets.total_entries }
