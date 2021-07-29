@@ -16,7 +16,8 @@ class User < ActiveRecord::Base
   has_many :comments, foreign_key: 'author_id'
   has_many :invoices, foreign_key: 'author_id'
   has_many :ptos
-
+  has_many :time_logs
+  
   scope :active, -> { where(deactivated: [false, nil]) }
 
   # Methods
