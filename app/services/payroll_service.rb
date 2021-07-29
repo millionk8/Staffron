@@ -12,7 +12,12 @@ class PayrollService
       user_info = { name: user.profile.full_name, billing: 0.0, pto: 0.0, sickness: 0.0, holiday: 0.0, total: 0.0 }
 
       user.time_logs.each do |time_log|
-        hours = (time_log.stopped_at - time_log.started_at) / 1.hour
+        if time_log.category.is_a?(PtoCategory)
+          hours = time_log.logged_days * 8.0      
+        else  
+          hours = (time_log.stopped_at - time_log.started_at) / 1.hour
+        end
+
         type = category_type(time_log.category).to_sym
 
         user_info[type] = user_info[type] + hours
@@ -41,5 +46,6 @@ class PayrollService
     end
 
     type
-  end  
+  end
+  
 end
