@@ -35,6 +35,31 @@ class TimeLog < ActiveRecord::Base
     self.where(stopped_at: nil, deleted: false)
   end
 
+  #ToDo: move to concern after matching column names with Pto.
+  def logged_days
+    days = 0.0
+
+    (started_at.to_date..stopped_at.to_date).each do |logged_day|
+      next if logged_day.on_weekend?
+
+      if logged_day == started_at.to_date
+        days = days + TimeLog.logged_day(17.0, started_at.hour)
+      elsif logged_day == stopped_at.to_date
+        days = days + TimeLog.logged_day(stopped_at.hour, 9.0)
+      else
+        days = days + 1.0  
+      end
+    end
+
+    days
+  end
+
+  def self.logged_day(from, to)
+    day = (from - to) / 8.0
+    day > 0.5 ? 1.0 : 0.5
+  end
+
+
   private
 
 
