@@ -13,8 +13,10 @@ class PayrollService
 
       user.time_logs.each do |time_log|
         if time_log.category.is_a?(PtoCategory)
-          hours = time_log.logged_days * 8.0      
-        else  
+          hours = time_log.logged_days * 8.0
+        elsif time_log.category.is_a?(HolidayCategory)
+          hours = 8.0
+        else
           hours = (time_log.stopped_at - time_log.started_at) / 1.hour
         end
 
