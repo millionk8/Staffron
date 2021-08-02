@@ -1,8 +1,8 @@
 class PayrollService
   def initialize(company, from, to)
     @company = company
-    @from = Date.parse(from).beginning_of_day
-    @to = Date.parse(to).end_of_day
+    @from = Date.strptime(from, "%m/%d/%Y").beginning_of_day
+    @to = Date.strptime(to, "%m/%d/%Y").end_of_day
   end
 
   def call
