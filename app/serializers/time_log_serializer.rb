@@ -10,7 +10,8 @@ class TimeLogSerializer < ActiveModel::Serializer
              :deleted,
              :deleted_at,
              :versions_count,
-             :updated_at
+             :updated_at,
+             :logged_days
 
   attribute :user_id
 
