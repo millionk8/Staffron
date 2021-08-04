@@ -38,6 +38,8 @@ class TimeLog < ActiveRecord::Base
   #ToDo: move to concern after matching column names with Pto.
   def logged_days
     days = 0.0
+    
+    return days if started_at.blank? || stopped_at.blank?
 
     (started_at.to_date..stopped_at.to_date).each do |logged_day|
       next if logged_day.on_weekend?
