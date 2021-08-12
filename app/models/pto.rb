@@ -2,6 +2,8 @@ class Pto < ApplicationRecord
 
   enum status: [:pending, :approved, :rejected]
 
+  validate :check_overlap, if: Proc.new { |pto| pto.approved? }
+
   # Callbacks
   before_save :set_status_date, if: :status_changed?
   after_update :update_remaining_timeoff_days, if: :can_update_remaining_timeoff_days?
@@ -68,6 +70,14 @@ class Pto < ApplicationRecord
     day = (from - to) / 8.0
     day > 0.5 ? 1.0 : 0.5
   end  
+
+  def check_overlap
+    query = 'user_id = :user_id AND deleted = false AND stopped_at IS NOT NULL AND ((started_at BETWEEN :start AND :stop) OR (stopped_at BETWEEN :start AND :stop) OR (started_at <= :start AND stopped_at >= :stop))'
+    args = { user_id: user_id, start: starts_at, stop: ends_at }
+    time_logs_count = TimeLog.where(query, args).count
+    
+    self.errors.add(:base, "#{time_logs_count} overlapping time logs found") if time_logs_count > 0
+  end
 
   def integrate_with_time_log
     TimeLog.create!(
