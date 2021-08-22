@@ -1,5 +1,4 @@
 class TimeLog < ActiveRecord::Base
-
   has_paper_trail on: [:update],
                   only: [:started_at, :stopped_at]
 

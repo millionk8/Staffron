@@ -8,7 +8,7 @@ class PayrollService
   def call
     data = []
 
-    @company.users.active.includes(:profile, time_logs: :category).where(time_logs: { started_at: @from..@to }).order("profiles.first_name ASC").each do |user|
+    @company.users.active.includes(:profile, time_logs: :category).where(time_logs: { started_at: @from..@to, deleted: false }).order("profiles.first_name ASC").each do |user|
       user_info = { name: user.profile.full_name, billing: 0.0, pto: 0.0, sickness: 0.0, holiday: 0.0, total: 0.0 }
 
       user.time_logs.each do |time_log|
